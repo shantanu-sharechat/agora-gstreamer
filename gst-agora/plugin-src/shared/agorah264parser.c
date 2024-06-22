@@ -2,7 +2,7 @@
 #include "agorah264parser.h"
 #include <stdio.h>
 
-int find_nal_unit(u_int8_t *buf, int size, H264Nal* nal){
+int find_nal_unit(uint8_t *buf, int size, H264Nal* nal){
 
    if (size < 4) {
 		return 0;
@@ -51,7 +51,7 @@ int find_nal_unit(u_int8_t *buf, int size, H264Nal* nal){
 }
 
 #define BIT(num, bit) (((num) & (1 << (7 - bit))) > 0)
-int exp_golomb_decode(u_int8_t *buffer, int size, int* bitOffset)
+int exp_golomb_decode(uint8_t *buffer, int size, int* bitOffset)
 {
 	int totalBits = size << 3;
 	int leadingZeroBits = 0;
@@ -68,7 +68,7 @@ int exp_golomb_decode(u_int8_t *buffer, int size, int* bitOffset)
 	return (1 << leadingZeroBits) - 1 + offset;
 }
 
-int get_frame(u_int8_t *buffer, int size, H264Frame* frame){
+int get_frame(uint8_t *buffer, int size, H264Frame* frame){
 
     H264Nal current_nal;
 

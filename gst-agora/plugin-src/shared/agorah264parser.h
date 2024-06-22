@@ -22,9 +22,9 @@ typedef struct {
 /*find the first nal start and end position.
  It returns the length of the nal, or 0 if did not find start of
  nal, or -1 if did not find end of nal*/
-int find_nal_unit(u_int8_t *buf, int size, H264Nal* nal);
+int find_nal_unit(uint8_t *buf, int size, H264Nal* nal);
 
 /*extract the boundires and frame type from a given buffer*/
-int get_frame(u_int8_t *buffer, int size, H264Frame* frame);
+int get_frame(uint8_t *buffer, int size, H264Frame* frame);
 
 #endif

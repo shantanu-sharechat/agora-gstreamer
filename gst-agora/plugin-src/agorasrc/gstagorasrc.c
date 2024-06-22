@@ -108,18 +108,18 @@ static void gst_agorasrc_get_property (GObject * object, guint prop_id,
 
 typedef struct{
 
-   u_int8_t* data;
+   uint8_t* data;
    size_t    len;
 
 }Frame;
 
-Frame* copy_frame(const u_int8_t* buffer, u_int64_t len){
+Frame* copy_frame(const uint8_t* buffer, uint64_t len){
 
      Frame* f=(Frame*)malloc(sizeof(Frame));
      if(f==NULL) return NULL;
 
      f->len=len;
-     f->data=(u_int8_t*)malloc(len);
+     f->data=(uint8_t*)malloc(len);
      
      if(f->data==NULL) {
        free(f);
@@ -138,7 +138,7 @@ void destory_frame(Frame** f){
 }
 
 //handle video out from agora to the plugin
-static void handle_video_out_fn(const u_int8_t* buffer, u_int64_t len, void* user_data ){
+static void handle_video_out_fn(const uint8_t* buffer, uint64_t len, void* user_data ){
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(!agoraSrc->audio){
@@ -148,7 +148,7 @@ static void handle_video_out_fn(const u_int8_t* buffer, u_int64_t len, void* use
     }
 }
 
-static void handle_audio_out_fn(const u_int8_t* buffer, u_int64_t len, void* user_data ){
+static void handle_audio_out_fn(const uint8_t* buffer, uint64_t len, void* user_data ){
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(agoraSrc->audio){
