@@ -14,6 +14,7 @@
 #include "AgoraBase.h"
 
 #include "agoraio.h"
+#include "agorac.h"
 
 
 AgoraIoContext_t*  agoraio_init(agora_config_t* config){
@@ -23,7 +24,7 @@ AgoraIoContext_t*  agoraio_init(agora_config_t* config){
         return NULL;
     }
 
-    ctx->agoraIo=std::make_shared<AgoraIo>(config);
+    ctx->agoraIo=std::make_shared<AgoraIO>(config);
 
     auto ret=ctx->agoraIo->init();
 
