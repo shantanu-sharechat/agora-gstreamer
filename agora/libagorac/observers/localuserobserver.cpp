@@ -3,7 +3,7 @@
 //
 
 
-#include "sample_local_user_observer.h"
+#include "localuserobserver.h"
 
 #include "log.h"
 
