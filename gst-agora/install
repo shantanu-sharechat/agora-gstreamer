@@ -1,2 +1,3 @@
 ninja -C build -v
+echo "Installing..."
 cd build && sudo ninja install -v && cd ..
