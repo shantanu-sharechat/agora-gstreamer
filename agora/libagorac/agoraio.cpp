@@ -47,10 +47,6 @@ bool AgoraIO::createConnection(){
   return true;
 }
 
-bool AgoraIO::setupVideoFrameObserver(){
-  return false;
-}
-
 int AgoraIO::doConnect(){
   return connection->connect(appid.c_str(), channel.c_str(), remote_uid.c_str());
 }
