@@ -1,2 +1,2 @@
 ninja -C build -v
-cd build && sudo ninja install && cd ..
+cd build && sudo ninja install -v && cd ..
