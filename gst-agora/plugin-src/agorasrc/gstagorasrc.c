@@ -82,10 +82,8 @@ enum
   PROP_VERBOSE,
   APP_ID,
   CHANNEL_ID,
-  USER_ID,
-  AUDIO,
-  OUT_PORT,
-  HOST
+  REMOTE_USER_ID,
+  AUDIO
 };
 
 /* the capabilities of the inputs and outputs.
@@ -175,29 +173,7 @@ int init_agora(Gstagorasrc * src){
 
    config.app_id=src->app_id;               /*appid*/
    config.ch_id=src->channel_id;            /*channel*/
-   config.user_id=src->user_id;             /*user id*/
-   config.is_audiouser=FALSE;                   /*is audio user*/
-   config.enc_enable=0;                         /*enable encryption */
-   config.enable_dual=0;                        /*enable dual */
-   config.dual_vbr=500000;                      /*dual video bitrate*/
-   config.dual_width=320;                       /*dual video width*/ 
-   config.dual_height=180;                      /*dual video height*/
-   config.min_video_jb=12;                      /*initial size of video buffer*/
-   config.dfps=30;                              /*dual fps*/
-   config.verbose=src->verbose;                 /*log level*/
-   config.fn=NULL;                              /*signal function to call*/
-   config.userData=(void*)(src);                /*additional params to the signal function*/ ;
-   config.in_audio_delay=0;
-   config.in_video_delay=0;
-   config.out_audio_delay=0;
-   config.out_video_delay=0;
-   config.sendOnly= 0;                          /*send only flag*/
-   config.enableProxy=FALSE;                    /*enable proxy*/
-   config.proxy_timeout= 0;                     /*proxy timeout*/
-   config.proxy_ips= "";                        /*proxy ips*/
-   config.transcode=FALSE;                      /*proxy ips*/  
-
-
+   config.remote_user_id=src->remote_user_id;
     /*initialize agora*/
    src->agora_ctx=agoraio_init(&config);    
   
@@ -374,20 +350,9 @@ gst_agorasrc_class_init (GstagorasrcClass * klass)
           FALSE, G_PARAM_READWRITE));
 
   /*user_id*/
-  g_object_class_install_property (gobject_class, USER_ID,
+  g_object_class_install_property (gobject_class, REMOTE_USER_ID,
       g_param_spec_string ("remoteuserid", "remoteuserid", "agora user id to subscribe to it (optional)",
           FALSE, G_PARAM_READWRITE));
-
-  /*out port*/
-  g_object_class_install_property (gobject_class, OUT_PORT,
-      g_param_spec_int ("outport", "outport", "outport udp port for audio out", 0, G_MAXUINT16,
-          5004, G_PARAM_READWRITE));
-
-  /*host*/
-  g_object_class_install_property (gobject_class, HOST,
-      g_param_spec_string ("host", "host", "udp host that we send audio to it",
-          FALSE, G_PARAM_READWRITE));
-
 
   gst_element_class_set_details_simple(gstelement_class,
     "agorasrc",
@@ -418,14 +383,9 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   //set app_id and channel_id to zero
   memset(agoraSrc->app_id, 0, MAX_STRING_LEN);
   memset(agoraSrc->channel_id, 0, MAX_STRING_LEN);
-  memset(agoraSrc->user_id, 0, MAX_STRING_LEN);
+  memset(agoraSrc->remote_user_id, 0, MAX_STRING_LEN);
   
-  agoraSrc->verbose = FALSE;
   agoraSrc->audio=FALSE;
-
-  memset(agoraSrc->host, 0, MAX_STRING_LEN);
-  strcpy(agoraSrc->host,"127.0.0.1");
-  agoraSrc->out_port=5004;
 }
 static void
 gst_agorasrc_set_property (GObject * object, guint prop_id,
@@ -447,19 +407,12 @@ gst_agorasrc_set_property (GObject * object, guint prop_id,
         str=g_value_get_string (value);
         g_strlcpy(agoraSrc->channel_id, str, MAX_STRING_LEN);
         break; 
-     case USER_ID:
+     case REMOTE_USER_ID:
         str=g_value_get_string (value);
-        g_strlcpy(agoraSrc->user_id, str, MAX_STRING_LEN);
+        g_strlcpy(agoraSrc->remote_user_id, str, MAX_STRING_LEN);
         break; 
      case AUDIO: 
         agoraSrc->audio = g_value_get_boolean (value);
-        break;
-     case OUT_PORT: 
-        agoraSrc->out_port=g_value_get_int (value);
-        break;
-    case HOST: 
-        str=g_value_get_string (value);
-        g_strlcpy(agoraSrc->host, str, MAX_STRING_LEN);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -483,17 +436,11 @@ gst_agorasrc_get_property (GObject * object, guint prop_id,
     case CHANNEL_ID:
         g_value_set_string (value, agoraSrc->channel_id);
        break;
-    case USER_ID:
-        g_value_set_string (value, agoraSrc->user_id);
+    case REMOTE_USER_ID:
+        g_value_set_string (value, agoraSrc->remote_user_id);
         break;
     case AUDIO:
         g_value_set_boolean (value, agoraSrc->audio);
-        break;
-    case OUT_PORT:
-        g_value_set_int (value, agoraSrc->out_port);
-        break;
-    case HOST:
-        g_value_set_string (value, agoraSrc->host);
         break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);

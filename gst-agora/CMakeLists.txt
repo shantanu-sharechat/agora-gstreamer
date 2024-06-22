@@ -24,10 +24,7 @@ include_directories(
     ${GSTREAMER_SDP_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR})
 
-add_library(gstagoraioudp SHARED plugin-src/agoraioudp/gstagoraioudp.c)
-add_library(gstagoraio SHARED plugin-src/agoraio/gstagoraio.c)
 add_library(gstagorasrc SHARED plugin-src/agorasrc/gstagorasrc.c)
-add_library(gstagorasink SHARED plugin-src/agorasink/gstagorasink.c)
 
 set(LIBS 
         ${GLIB_LIBRARIES}
@@ -44,12 +41,6 @@ set(LIBS
         avcodec)
 
 #add required libs
-target_link_libraries(gstagoraioudp ${LIBS})
-target_link_libraries(gstagoraio ${LIBS})
 target_link_libraries(gstagorasrc ${LIBS})
-target_link_libraries(gstagorasink ${LIBS})
-    
-install(TARGETS gstagoraioudp DESTINATION ${INSTALL_PATH}/lib)
-install(TARGETS gstagoraio DESTINATION ${INSTALL_PATH}/lib)
+
 install(TARGETS gstagorasrc DESTINATION ${INSTALL_PATH}/lib)
-install(TARGETS gstagorasink DESTINATION ${INSTALL_PATH}/lib)
