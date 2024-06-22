@@ -9,6 +9,9 @@ cdata.set_quoted('GST_PACKAGE_NAME', 'agora source and sink pluging')
 cdata.set_quoted('GST_PACKAGE_ORIGIN', 'https://www.agora.io')
 configure_file(output : 'config.h', configuration : cdata)
 
+# Include directories
+inc_dir = include_directories('/usr/local/include')
+
 # agorasrc
 agorasrc_sources = [
   'agorasrc/gstagorasrc.c',
@@ -32,5 +35,6 @@ gstagorasrc = library('gstagorasrc',
   objects: [
         '/usr/local/lib/libagorac.so',
         '/usr/local/lib/libagora_rtc_sdk.so',
-    ]
+    ],
+  include_directories: inc_dir
 )
