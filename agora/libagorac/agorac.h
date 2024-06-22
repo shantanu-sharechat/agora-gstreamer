@@ -8,6 +8,7 @@
  #endif
 
  #include "agoraconfig.h"
+#include <stdint.h>
 
 
 typedef  struct agora_context_t agora_context_t;
