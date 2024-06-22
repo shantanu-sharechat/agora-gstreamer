@@ -15,6 +15,6 @@ public:
   YUVFrameObserver(){};
   void onFrame(const char* channelId, agora::user_id_t remoteUid, const agora::media::base::VideoFrame* frame) override;
   void setFrameOutFn(agora_media_out_fn fn, void* user_data);
-}
+};
 
 #endif //AGORA_GSTREAMER_YUVFRAMEOBSERVER_H

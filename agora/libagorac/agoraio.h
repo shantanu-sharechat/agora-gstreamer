@@ -10,7 +10,7 @@
 #include "IAgoraService.h"
 #include "NGIAgoraLocalUser.h"
 #include "agorac.h"
-#include "yuvframeobserver.h"
+#include "observers/yuvframeobserver.h"
 
 class AgoraIO{
   std::string appid, channel, remote_uid;

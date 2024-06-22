@@ -13,20 +13,6 @@
 #include "IAgoraService.h"
 #include "AgoraBase.h"
 
-#include "helpers/agoradecoder.h"
-#include "helpers/agoraencoder.h"
-#include "helpers/agoralog.h"
-#include "helpers/localconfig.h"
-
-//#include "userobserver.h"
-#include "helpers/context.h"
-
-#include "helpers/utilities.h"
-#include "agoratype.h"
-#include "helpers/agoraconstants.h"
-
-#include "helpers/uidtofile.h"
-
 #include "agoraio.h"
 
 
