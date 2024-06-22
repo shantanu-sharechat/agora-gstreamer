@@ -11,12 +11,13 @@
 #include "NGIAgoraLocalUser.h"
 #include "agorac.h"
 #include "observers/yuvframeobserver.h"
+#include "observers/localuserobserver.h"
 
 class AgoraIO{
   std::string appid, channel, remote_uid;
   agora::base::IAgoraService* service;
   agora::agora_refptr<agora::rtc::IRtcConnection> connection;
-  std::shared_ptr<agora::rtc::ILocalUserObserver> local_user_observer;
+  std::shared_ptr<LocalUserObserver> local_user_observer;
   std::shared_ptr<YUVFrameObserver> yuvFrameObserver;
   void setupAudioFrameObserver();
   void setupVideoFrameObserver();
