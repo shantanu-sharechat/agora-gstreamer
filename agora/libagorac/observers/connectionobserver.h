@@ -6,6 +6,7 @@
 #define AGORA_GSTREAMER_CONNECTIONOBSERVER_H
 
 #include "NGIAgoraRtcConnection.h"
+#include "sampleevent.h"
 
 class ConnectionObserver : public agora::rtc::IRtcConnectionObserver, public agora::rtc::INetworkObserver {
 public:
