@@ -16,6 +16,8 @@
 #include "agoraio.h"
 #include "agorac.h"
 
+#include "helpers/context.h"
+
 
 AgoraIoContext_t*  agoraio_init(agora_config_t* config){
 
