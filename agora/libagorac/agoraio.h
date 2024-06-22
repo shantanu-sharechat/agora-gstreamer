@@ -18,14 +18,14 @@ class AgoraIO{
   agora::agora_refptr<agora::rtc::IRtcConnection> connection;
   std::shared_ptr<agora::rtc::ILocalUserObserver> local_user_observer;
   std::shared_ptr<YUVFrameObserver> yuvFrameObserver;
-  void AgoraIO::setupAudioFrameObserver();
-  void AgoraIO::setupVideoFrameObserver();
-  void AgoraIO::setupLocalUserObserver();
-  void AgoraIO::setupConnectionObserver();
-  bool AgoraIO::doConnect();
-  void AgoraIO::subscribe();
-  bool AgoraIO::initializeService();
-  bool AgoraIO::createConnection();
+  void setupAudioFrameObserver();
+  void setupVideoFrameObserver();
+  void setupLocalUserObserver();
+  void setupConnectionObserver();
+  bool doConnect();
+  void subscribe();
+  bool initializeService();
+  bool createConnection();
 public:
   AgoraIO(agora_config_t* agora_config);
   bool init();

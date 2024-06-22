@@ -4,7 +4,7 @@
 
 #ifndef AGORA_GSTREAMER_CONTEXT_H
 #define AGORA_GSTREAMER_CONTEXT_H
-#include "agoraio.h"
+#include "../agoraio.h"
 
 struct AgoraIoContext_t{
 

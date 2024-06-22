@@ -9,8 +9,8 @@ TARGET_LIB = libagorac.so
 DESTDIR?=/usr/local/lib
 
 AGORA_OBSERCER = observers/yuvframeobserver.cpp \
-				observer/connectionobserver.cpp \
-				observer/localuserobserver.cpp
+				observers/connectionobserver.cpp \
+				observers/localuserobserver.cpp
 
 AGORA_IO_FILES=agoraio.cpp
 

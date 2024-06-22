@@ -30,8 +30,7 @@ set(HELPER_FILES helpers/agoradecoder.cpp
 	      syncbuffer.cpp)
 
 set(AGORA_OBSERCER  observer/pcmframeobserver.cpp 
-		    observer/h264frameobserver.cpp 
-		    observer/connectionobserver.cpp 
+		    observer/connectionobserver.cpp
 		    observer/userobserver.cpp)
 
 set(AGORA_HELPERS agoraevent.cpp)
