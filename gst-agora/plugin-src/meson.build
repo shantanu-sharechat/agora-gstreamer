@@ -17,13 +17,16 @@ agorasrc_sources = [
 x264 = dependency('x264')
 swscale = dependency('libswscale')
 opus = dependency('opus')
+av= dependency('libavcodec')
+gst_base_dep = dependency('gstreamer-base-1.0')
+gst_app_dep = dependency('gstreamer-app-1.0')
 
 gst_base_dep = dependency('gstreamer-base-1.0')
 
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
-  dependencies : [gst_dep,x264, swscale, opus,av, gst_base_dep],
+  dependencies : [gst_dep,x264, swscale, opus, av, gst_base_dep],
   install : true,
   install_dir : plugins_install_dir,
   objects: [
