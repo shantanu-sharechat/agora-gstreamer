@@ -8,6 +8,7 @@
 #include "observers/connectionobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/yuvframeobserver.h"
+#include "helpers/log.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = agora_config->app_id;
@@ -23,9 +24,9 @@ bool AgoraIO::initializeService(){
   scfg.enableAudioProcessor = true;
   scfg.enableAudioDevice = false;
   scfg.enableVideo = true;
-  if (_service->initialize(scfg) != agora::ERR_OK)
+  if (service->initialize(scfg) != agora::ERR_OK)
   {
-    logMessage("Error initialize Agora SDK");
+    AG_LOG(ERROR, "Error initialize Agora SDK");
     return false;
   }
   return true;
