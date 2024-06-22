@@ -5,7 +5,7 @@
 
 #include "localuserobserver.h"
 
-#include "log.h"
+#include "../helpers/log.h"
 
 LocalUserObserver::LocalUserObserver(agora::rtc::IRtcConnection *connection)
         : connection_(connection)

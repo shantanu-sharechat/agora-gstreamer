@@ -5,8 +5,7 @@
 #ifndef AGORA_GSTREAMER_CONNECTIONOBSERVER_H
 #define AGORA_GSTREAMER_CONNECTIONOBSERVER_H
 
-class ConnectionObserver : public agora::rtc::IRtcConnectionObserver,
-                           public agora::rtc::INetworkObserver {
+class ConnectionObserver : public agora::rtc::IRtcConnectionObserver, public agora::rtc::INetworkObserver {
 public:
   ConnectionObserver()
   {
