@@ -5,6 +5,8 @@
 #ifndef AGORA_GSTREAMER_CONNECTIONOBSERVER_H
 #define AGORA_GSTREAMER_CONNECTIONOBSERVER_H
 
+#include "NGIAgoraRtcConnection.h"
+
 class ConnectionObserver : public agora::rtc::IRtcConnectionObserver, public agora::rtc::INetworkObserver {
 public:
   ConnectionObserver()
@@ -54,32 +56,6 @@ public: // IRtcConnectionObserver
 
 public: // INetworkObserver
   void onUplinkNetworkInfoUpdated(const agora::rtc::UplinkNetworkInfo &info) override;
-
-private:
-  SampleEvent connect_ready_;
-  SampleEvent disconnect_ready_;
-};
-
-class RtmpConnectionObserver : public agora::rtc::IRtmpConnectionObserver {
-public:
-  RtmpConnectionObserver()
-  {
-  }
-  int waitUntilConnected(int waitMs)
-  {
-    return connect_ready_.Wait(waitMs);
-  }
-
-public:
-  void onConnected(const agora::rtc::RtmpConnectionInfo &connectionInfo) override;
-  void onDisconnected(const agora::rtc::RtmpConnectionInfo &connectionInfo) override;
-  void onReconnecting(const agora::rtc::RtmpConnectionInfo &connectionInfo) override;
-  void onReconnected(const agora::rtc::RtmpConnectionInfo &connectionInfo) override;
-  void onConnectionFailure(const agora::rtc::RtmpConnectionInfo &connectionInfo,
-                           agora::rtc::RTMP_CONNECTION_ERROR errCode) override;
-  void onTransferStatistics(uint64_t video_width, uint64_t video_height, uint64_t video_bitrate,
-                            uint64_t audio_bitrate, uint64_t video_frame_rate,
-                            uint64_t push_video_frame_cnt, uint64_t pop_video_frame_cnt) override;
 
 private:
   SampleEvent connect_ready_;
