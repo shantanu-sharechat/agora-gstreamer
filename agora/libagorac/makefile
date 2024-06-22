@@ -10,7 +10,8 @@ DESTDIR?=/usr/local/lib
 
 AGORA_OBSERCER = observers/yuvframeobserver.cpp \
 				observers/connectionobserver.cpp \
-				observers/localuserobserver.cpp
+				observers/localuserobserver.cpp \
+				observers/sampleevent.cpp
 
 AGORA_IO_FILES=agoraio.cpp
 
