@@ -4,10 +4,11 @@
 
 #ifndef AGORA_GSTREAMER_CONTEXT_H
 #define AGORA_GSTREAMER_CONTEXT_H
+#include "agoraio.h"
 
 struct AgoraIoContext_t{
 
-  std::shared_ptr<AgoraIo>  agoraIo;
+  std::shared_ptr<AgoraIO>  agoraIo;
 };
 
 #endif //AGORA_GSTREAMER_CONTEXT_H

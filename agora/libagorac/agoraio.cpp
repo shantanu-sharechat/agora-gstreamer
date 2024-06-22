@@ -5,9 +5,9 @@
 #include "agoraio.h"
 #include "IAgoraService.h"
 #include "AgoraBase.h"
-#include "connectionobserver.h"
-#include "localuserobserver.h"
-#include "yuvframeobserver.h"
+#include "observers/connectionobserver.h"
+#include "observers/localuserobserver.h"
+#include "observers/yuvframeobserver.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = agora_config->app_id;
