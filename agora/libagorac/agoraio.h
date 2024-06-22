@@ -22,7 +22,7 @@ class AgoraIO{
   void setupVideoFrameObserver();
   void setupLocalUserObserver();
   void setupConnectionObserver();
-  bool doConnect();
+  int doConnect();
   void subscribe();
   bool initializeService();
   bool createConnection();

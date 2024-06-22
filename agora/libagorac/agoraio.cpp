@@ -41,7 +41,7 @@ bool AgoraIO::createConnection(){
   connection = service->createRtcConnection(ccfg);
   if (!connection)
   {
-    logMessage("Error create connection");
+    AG_LOG(ERROR, "Error create connection");
     return false;
   }
   return true;
@@ -51,7 +51,7 @@ bool AgoraIO::setupVideoFrameObserver(){
   return false;
 }
 
-void AgoraIO::doConnect(){
+int AgoraIO::doConnect(){
   return connection->connect(appid.c_str(), channel.c_str(), remote_uid.c_str());
 }
 
