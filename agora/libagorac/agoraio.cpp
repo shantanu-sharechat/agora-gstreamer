@@ -59,21 +59,21 @@ void AgoraIO::subscribe(){
 
 void AgoraIO::setupConnectionObserver(){
   AG_LOG(INFO, "Setting up connection observer");
-  connectionObserver = std::make_shared<ConnectionObserver>();
+  connectionObserver = new ConnectionObserver();
   AG_LOG(INFO, "Setting up connection observer");
-  connection->registerObserver(connectionObserver.get());
+  connection->registerObserver(connectionObserver);
 }
 
 void AgoraIO::setupLocalUserObserver(){
-  local_user_observer = std::make_shared<LocalUserObserver>(connection->getLocalUser());
+  local_user_observer = new LocalUserObserver(connection->getLocalUser());
 }
 
 void AgoraIO::setupAudioFrameObserver(){
 }
 
 void AgoraIO::setupVideoFrameObserver() {
-  yuvFrameObserver = std::make_shared<YUVFrameObserver>();
-  local_user_observer->setVideoFrameObserver(yuvFrameObserver.get());
+  yuvFrameObserver = new YUVFrameObserver();
+  local_user_observer->setVideoFrameObserver(yuvFrameObserver);
 }
 
 void AgoraIO::setVideoOutFn(agora_media_out_fn fn, void *user_data) {
