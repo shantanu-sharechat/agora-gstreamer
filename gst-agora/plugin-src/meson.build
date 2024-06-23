@@ -20,13 +20,7 @@ gst_app_dep = dependency('gstreamer-app-1.0')
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
-  dependencies : [gst_dep, gst_base_dep],
+  dependencies : [gst_dep, gst_base_dep, agorac, agora_rtc_sdk, agora_fdkaac, agora_ffmpeg],
   install : true,
-  install_dir : plugins_install_dir,
-  objects: [
-        '/usr/local/lib/libagorac.so',
-        '/usr/local/lib/libagora_rtc_sdk.so',
-        '/usr/local/lib/libagora-fdkaac.so',
-        '/usr/local/lib/libagora-ffmpeg.so',
-    ]
+  install_dir : plugins_install_dir
 )
