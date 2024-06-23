@@ -15,15 +15,15 @@ libdir1 = '/usr/local/lib'
 libdir2 = '/usr/local/lib/x86_64-linux-gnu'
 
 # Find libraries in /usr/local/lib
-libagorac = find_library('agorac', dirs : [libdir1])
-libagora_rtc_sdk = find_library('agora_rtc_sdk', dirs : [libdir1])
-libagora_fdkaac = find_library('agora_fdkaac', dirs : [libdir1])
-libagora_ffmpeg = find_library('agora_ffmpeg', dirs : [libdir1])
+libagorac = cc.find_library('agorac', dirs : [libdir1])
+libagora_rtc_sdk = cc.find_library('agora_rtc_sdk', dirs : [libdir1])
+libagora_fdkaac = cc.find_library('agora_fdkaac', dirs : [libdir1])
+libagora_ffmpeg = cc.find_library('agora_ffmpeg', dirs : [libdir1])
 
 # Find libraries in /usr/local/lib/x86_64-linux-gnu
-libgstreamer = find_library('gstreamer-1.0', dirs : [libdir2])
-libgobject = find_library('gobject-2.0', dirs : [libdir2])
-libglib = find_library('glib-2.0', dirs : [libdir2])
-libgstbase = find_library('gstbase-1.0', dirs : [libdir2])
+libgstreamer = cc.find_library('gstreamer-1.0', dirs : [libdir2])
+libgobject = cc.find_library('gobject-2.0', dirs : [libdir2])
+libglib = cc.find_library('glib-2.0', dirs : [libdir2])
+libgstbase = cc.find_library('gstbase-1.0', dirs : [libdir2])
 
 subdir('plugin-src')
