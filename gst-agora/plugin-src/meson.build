@@ -24,17 +24,17 @@ incdir5 = include_directories('/usr/lib/x86_64-linux-gnu/glib-2.0/include')
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
-                      include_directories : [incdir1, incdir2, incdir3, incdir4, incdir5],
-                      dependencies : [
-                        libagorac,
-                        libagora_rtc_sdk,
-                        libagora_fdkaac,
-                        libagora_ffmpeg,
-                        libgstreamer,
-                        libgobject,
-                        libglib,
-                        libgstbase
-                      ],
+  include_directories : [incdir1, incdir2, incdir3, incdir4, incdir5],
+  dependencies : [
+    libagorac,
+    libagora_rtc_sdk,
+    libagora_fdkaac,
+    libagora_ffmpeg,
+    libgstreamer,
+    libgobject,
+    libglib,
+    libgstbase
+  ],
   install : true,
   install_dir : plugins_install_dir
 )
