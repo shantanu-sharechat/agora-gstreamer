@@ -21,6 +21,11 @@ incdir3 = include_directories('/usr/local/include')
 incdir4 = include_directories('/usr/include/x86_64-linux-gnu')
 incdir5 = include_directories('/usr/lib/x86_64-linux-gnu/glib-2.0/include')
 
+x264 = dependency('x264')
+swscale = dependency('libswscale')
+opus = dependency('opus')
+av= dependency('libavcodec')
+
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
@@ -33,7 +38,11 @@ gstagorasrc = library('gstagorasrc',
     libgstreamer,
     libgobject,
     libglib,
-    libgstbase
+    libgstbase,
+    x264,
+    swscale,
+    opus,
+    av
   ],
   install : true,
   install_dir : plugins_install_dir
