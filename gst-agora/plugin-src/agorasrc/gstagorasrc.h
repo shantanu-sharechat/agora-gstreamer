@@ -76,13 +76,9 @@ struct _Gstagorasrc
 {
   GstPushSrc element;
 
-  GstElement *appAudioSrc, *udpsink;
-  GstElement *out_pipeline;
-
   GstPad  *srcpad;
 
   gboolean verbose;
-  gboolean audio;
 
   AgoraIoContext_t* agora_ctx;
 

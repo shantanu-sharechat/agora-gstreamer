@@ -196,49 +196,6 @@ int init_agora(Gstagorasrc * src){
    return 0;
 }
 
-int setup_audio_udp(Gstagorasrc *agoraSrc){
-
-   agoraSrc->appAudioSrc= gst_element_factory_make ("appsrc", "source");
-   if(!agoraSrc->appAudioSrc){
-       g_print("failed to create audio app src\n");
-   }
-   else{
-       g_print("created audio app src successfully\n");
-   }
-   agoraSrc->udpsink = gst_element_factory_make("udpsink", "udpsink");
-   if(!agoraSrc->udpsink){
-       g_print("failed to create audio udpsink\n");
-   }
-   else{
-       g_print("created udpsink successfully\n");
-   }
-
-   agoraSrc->out_pipeline = gst_pipeline_new ("pipeline");
-   if(!agoraSrc->out_pipeline){
-       g_print("failed to create audio pipeline\n");
-   }
-
-   //out plugin
-   gst_bin_add_many (GST_BIN (agoraSrc->out_pipeline), agoraSrc->appAudioSrc, agoraSrc->udpsink, NULL);
-   gst_element_link_many (agoraSrc->appAudioSrc, agoraSrc->udpsink, NULL);
-
-    //setup appsrc 
-    g_object_set (G_OBJECT (agoraSrc->appAudioSrc),
-            "stream-type", 0,
-            "is-live", TRUE,
-            "format", GST_FORMAT_TIME, NULL);
-
-     g_object_set (G_OBJECT (agoraSrc->udpsink),
-            "host", agoraSrc->host,
-            "port", agoraSrc->out_port,
-              NULL);
-
-    //set the pipeline in playing mode
-    gst_element_set_state (agoraSrc->out_pipeline, GST_STATE_PLAYING);
-
-    return TRUE;
-}
-
 Frame* get_next_frame(GQueue* q, int timeout)
 {
   Frame* f=NULL;
@@ -387,6 +344,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   
   agoraSrc->audio=FALSE;
 }
+
 static void
 gst_agorasrc_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec)
