@@ -29,7 +29,6 @@ gstagorasrc = library('gstagorasrc',
   dependencies : [
     libagorac,
     libagora_rtc_sdk,
-    libagora_fdkaac,
     libagora_ffmpeg,
     libgstreamer,
     libgobject,
