@@ -7,6 +7,7 @@
 
 #include "NGIAgoraRtcConnection.h"
 #include "sampleevent.h"
+#include "log.h"
 
 class ConnectionObserver : public agora::rtc::IRtcConnectionObserver, public agora::rtc::INetworkObserver {
 public:
@@ -16,6 +17,10 @@ public:
   int waitUntilConnected(int waitMs)
   {
     return connect_ready_.Wait(waitMs);
+  }
+  ~ConnectionObserver()
+  {
+    AG_LOG(INFO, "ConnectionObserver destructor");
   }
 
 public: // IRtcConnectionObserver
