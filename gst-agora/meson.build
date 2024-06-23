@@ -2,6 +2,8 @@ project('gst-template', 'c', version : '1.17.0.1', license : 'LGPL')
 
 plugins_install_dir = join_paths(get_option('libdir'), 'gstreamer-1.0')
 
+message('Value of plugins_install_dir: ' + plugins_install_dir)
+
 cc = meson.get_compiler('c')
 
 gst_version = meson.project_version()
