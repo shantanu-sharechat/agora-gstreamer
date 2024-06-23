@@ -59,6 +59,7 @@ void AgoraIO::subscribe(){
 
 void AgoraIO::setupConnectionObserver(){
   auto connObserver = std::make_shared<ConnectionObserver>();
+  AG_LOG(INFO, "Setting up connection observer");
   connection->registerObserver(connObserver.get());
 }
 
