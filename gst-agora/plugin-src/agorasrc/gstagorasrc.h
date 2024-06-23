@@ -78,6 +78,9 @@ struct _Gstagorasrc
 
   GstPad  *srcpad;
 
+  gboolean verbose;
+  gboolean audio;
+
   AgoraIoContext_t* agora_ctx;
 
   GQueue*      media_queue;
