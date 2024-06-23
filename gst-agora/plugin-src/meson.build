@@ -14,9 +14,14 @@ agorasrc_sources = [
   'agorasrc/gstagorasrc.c',
   ]
 
+# Specify the include directories
+incdir1 = include_directories('/usr/local/include')
+incdir2 = include_directories('/usr/local/include/x86_64-linux-gnu')
+
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
+                      include_directories : [incdir1, incdir2],
                       dependencies : [
                         libagorac,
                         libagora_rtc_sdk,
