@@ -8,7 +8,7 @@ LDFLAGS      = -shared
 TARGET_LIB = libagorac.so
 DESTDIR?=/usr/local/lib
 
-AGORA_OBSERCER = observers/yuvframeobserver.cpp \
+AGORA_OBSERVER = observers/yuvframeobserver.cpp \
 				observers/connectionobserver.cpp \
 				observers/localuserobserver.cpp \
 				observers/sampleevent.cpp
@@ -19,8 +19,8 @@ all: ${TARGET_LIB}
 
 $(TARGET_LIB): $(OBJS) agorac.cpp
 	$(CC)  $(FLAGS) ${LDFLAGS} -o $(TARGET_LIB) agorac.cpp \
-	       ${HELPER_FILES} ${AGORA_OBSERCER} \
-	       ${AGORA_HELPERS} ${AGORA_IO_FILES} $(CFLAGS)
+	       ${AGORA_OBSERVER} \
+	       ${AGORA_IO_FILES} $(CFLAGS)
 
 clean:
 	rm $(TARGET_LIB)
