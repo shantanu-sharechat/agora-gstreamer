@@ -2,7 +2,7 @@
 CC = g++  # C compiler
 
 FLAGS        = -std=c++11  -I${AGORA_SDK_DIR}/agora_sdk/include
-CFLAGS       = -fPIC -g -std=c++11
+CFLAGS       = -fPIC -std=c++11
 LDFLAGS      = -shared
 
 TARGET_LIB = libagorac.so
