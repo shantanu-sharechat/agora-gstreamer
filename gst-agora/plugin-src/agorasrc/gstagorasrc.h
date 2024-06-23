@@ -78,8 +78,6 @@ struct _Gstagorasrc
 
   GstPad  *srcpad;
 
-  gboolean verbose;
-
   AgoraIoContext_t* agora_ctx;
 
   GQueue*      media_queue;
@@ -88,8 +86,6 @@ struct _Gstagorasrc
   gchar channel_id[MAX_STRING_LEN];
   gchar remote_user_id[MAX_STRING_LEN];
 
-  gchar host[MAX_STRING_LEN];
-  gint out_port;
 };
 
 G_END_DECLS
