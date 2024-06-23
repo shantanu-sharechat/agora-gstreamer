@@ -7,7 +7,7 @@
 
 #include "NGIAgoraRtcConnection.h"
 #include "sampleevent.h"
-#include "log.h"
+#include "../helpers/log.h"
 
 class ConnectionObserver : public agora::rtc::IRtcConnectionObserver, public agora::rtc::INetworkObserver {
 public:
