@@ -254,7 +254,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
     segment->start = f->ts * GST_MSECOND;
     segment->stop = f->ts + 86400*1000 * GST_MSECOND;
     GstEvent* gst_event = gst_event_new_segment(segment);
-    GstPad *pad = gst_element_get_static_pad(psrc, "src");
+    GstPad *pad = gst_element_get_static_pad( (GstElement*) psrc, "src");
     gst_pad_push_event(pad, gst_event);
     gst_object_unref(pad);
     gst_segment_free(segment);
