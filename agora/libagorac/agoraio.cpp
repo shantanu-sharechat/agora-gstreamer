@@ -21,7 +21,9 @@ bool AgoraIO::initializeService(){
   AG_LOG(INFO, "Initializing Agora SDK service");
   service = createAgoraService();
   agora::base::AgoraServiceConfiguration scfg;
+  AG_LOG(INFO, "Setting before appid");
   scfg.appId = appid.c_str();
+  AG_LOG(INFO, "Setting after appid");
   scfg.enableAudioProcessor = true;
   scfg.enableAudioDevice = false;
   scfg.enableVideo = true;
