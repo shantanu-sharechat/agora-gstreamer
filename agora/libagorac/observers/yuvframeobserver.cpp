@@ -8,7 +8,7 @@
 void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid, const agora::media::base::VideoFrame* frame){
   std::cout<<"Frame received "<< "ts: "<<videoFrame->timestamp<<" width: "<<frame->width<<std::endl;
   if(fn){
-    fn(channelId, remoteUid, frame, user_data);
+//    fn(channelId, remoteUid, frame, user_data);
   }
 }
 
