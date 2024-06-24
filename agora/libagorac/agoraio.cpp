@@ -32,6 +32,7 @@ bool AgoraIO::initializeService(){
     AG_LOG(ERROR, "Error initialize Agora SDK");
     return false;
   }
+  AG_LOG(INFO, "Agora SDK service initialized");
   return true;
 }
 
