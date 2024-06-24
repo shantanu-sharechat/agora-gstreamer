@@ -17,20 +17,19 @@
 #include "agorac.h"
 
 #include "helpers/context.h"
+#include "helpers/log.h"
 
 
 AgoraIoContext_t*  agoraio_init(agora_config_t* config){
 
     AgoraIoContext_t* ctx=new AgoraIoContext_t;
-    if(ctx==nullptr){
-        return NULL;
-    }
 
     ctx->agoraIo=std::make_shared<AgoraIO>(config);
 
     auto ret=ctx->agoraIo->init();
 
     if(ret==false){
+      AG_LOG(ERROR, "Error initializing Agora SDK");
        return nullptr;
     }
 

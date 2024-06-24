@@ -214,7 +214,7 @@ Frame* get_next_frame(GQueue* q, int timeout)
 static GstFlowReturn
 gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
 
-  g_print("fill called");
+  g_print("fill called\n");
   //int is_key_frame=0;
   size_t data_size=0;
   GstMemory *memory=NULL;

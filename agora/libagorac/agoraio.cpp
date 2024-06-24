@@ -18,6 +18,7 @@ AgoraIO::AgoraIO(agora_config_t* agora_config) {
 }
 
 bool AgoraIO::initializeService(){
+  AG_LOG(INFO, "Initializing Agora SDK service");
   service = createAgoraService();
   agora::base::AgoraServiceConfiguration scfg;
   scfg.appId = appid.c_str();
