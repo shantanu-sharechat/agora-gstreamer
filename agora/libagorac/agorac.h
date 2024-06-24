@@ -15,7 +15,7 @@ typedef  struct agora_context_t agora_context_t;
 
 typedef  void (*agora_media_out_fn)(const uint8_t* buffer,
                                      uint64_t len,
-									 void* user_data);
+									 void* user_data, uint64_t ts);
 
 typedef struct agora_receive_context_t agora_receive_context_t;
 

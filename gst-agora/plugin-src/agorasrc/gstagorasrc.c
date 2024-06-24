@@ -110,10 +110,11 @@ typedef struct{
 
    uint8_t* data;
    size_t    len;
+   uint64_t ts;
 
 }Frame;
 
-Frame* copy_frame(const uint8_t* buffer, uint64_t len){
+Frame* copy_frame(const uint8_t* buffer, uint64_t len, uint64_t ts){
 
      Frame* f=(Frame*)malloc(sizeof(Frame));
      if(f==NULL) return NULL;
@@ -127,6 +128,7 @@ Frame* copy_frame(const uint8_t* buffer, uint64_t len){
      } 
 
      memcpy(f->data, buffer, len);
+     f->ts=ts;
      return f;
 }
 
@@ -138,17 +140,17 @@ void destory_frame(Frame** f){
 }
 
 //handle video out from agora to the plugin
-static void handle_video_out_fn(const uint8_t* buffer, uint64_t len, void* user_data ){
+static void handle_video_out_fn(const uint8_t* buffer, uint64_t len, void* user_data, uint64_t ts){
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(!agoraSrc->audio){
 
-        Frame* f=copy_frame(buffer, len);
+        Frame* f=copy_frame(buffer, len, ts);
         g_queue_push_tail(agoraSrc->media_queue, f);
     }
 }
 
-static void handle_audio_out_fn(const uint8_t* buffer, uint64_t len, void* user_data ){
+static void handle_audio_out_fn(const uint8_t* buffer, uint64_t len, void* user_data, uint64_t ts){
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(agoraSrc->audio){
@@ -214,7 +216,6 @@ Frame* get_next_frame(GQueue* q, int timeout)
 static GstFlowReturn
 gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
 
-  g_print("fill called\n");
   //int is_key_frame=0;
   size_t data_size=0;
   GstMemory *memory=NULL;
@@ -244,6 +245,20 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
 
   gst_buffer_fill(buffer, 0, f->data, data_size);
   gst_buffer_set_size(buffer, data_size);
+  GST_BUFFER_PTS(pts) = f->ts;
+  GST_BUFFER_DTS(dts) = f->ts;
+
+  if (!agoraSrc->is_segment_sent){
+    GstSegment* segment = gst_segment_new();
+    segment->format = GST_FORMAT_TIME;
+    segment->start = f->ts * GST_MSECOND;
+    segment->stop = f->ts + 86400*1000 * GST_MSECOND;
+    GstEvent* gst_event = gst_event_new_segment(segment);
+    GstPad *pad = gst_element_get_static_pad(psrc, "src");
+    gst_pad_push_event(pad, gst_event);
+    gst_object_unref(pad);
+    agoraSrc->is_segment_sent = true;
+  }
 
   destory_frame(&f);
 
@@ -335,7 +350,7 @@ static void
 gst_agorasrc_init (Gstagorasrc * agoraSrc)
 {
 
-//  gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
+  gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
   gst_base_src_set_blocksize  (GST_BASE_SRC (agoraSrc), 10*1024);
 
   g_print("agorasrc instance has been initialized\n");
