@@ -12,6 +12,7 @@
 #include "observers/localuserobserver.h"
 #include "observers/yuvframeobserver.h"
 #include "helpers/log.h"
+#include "helpers/servicecreation.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->appid)
@@ -22,27 +23,12 @@ AgoraIO::AgoraIO(agora_config_t* agora_config) {
 
 bool AgoraIO::initializeService(){
   AG_LOG(INFO, "Initializing Agora SDK service");
-  service = createAgoraService();
+  service = createAndInitAgoraService(false, true, true);
   if (service == nullptr)
   {
     AG_LOG(ERROR, "Error create Agora SDK service");
     return false;
   }
-  agora::base::AgoraServiceConfiguration scfg;
-  AG_LOG(INFO, "Setting before appid");
-  scfg.appId = appid.c_str();
-  std::cout<<"Appid: "<<scfg.appId<<"\n";
-  AG_LOG(INFO, "Setting after appid");
-  scfg.enableAudioProcessor = true;
-  scfg.enableAudioDevice = false;
-  scfg.enableVideo = true;
-  AG_LOG(INFO, "Setting after video");
-  if (service->initialize(scfg) != agora::ERR_OK)
-  {
-    AG_LOG(ERROR, "Error initialize Agora SDK");
-    return false;
-  }
-  AG_LOG(INFO, "Agora SDK service initialized");
   return true;
 }
 
