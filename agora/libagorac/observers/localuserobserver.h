@@ -173,12 +173,6 @@ public:
   void onFirstRemoteAudioDecoded(agora::user_id_t userId, int elapsed) {}
   void onFirstRemoteVideoDecoded(agora::user_id_t userId, int width, int height, int elapsed) override;
 
-  // virtual void onFirstRemoteAudioDecoded(agora::user_id_t userId, int elapsed){}
-
-  void onAudioTrackUnpublished(agora::agora_refptr<agora::rtc::ILocalAudioTrack> audioTrack) override {}
-
-
-  void onVideoTrackUnpublished(agora::agora_refptr<agora::rtc::ILocalVideoTrack> videoTrack)override {}
 
   void onVideoSizeChanged(agora::user_id_t userId, int width, int height, int rotation) {}
   void onActiveSpeaker(agora::user_id_t userId){}
