@@ -22,7 +22,6 @@ void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid
 }
 
 void YUVFrameObserver::setFrameOutFn(agora_media_out_fn _fn, void* _user_data){
-  std::cout<<"Frame out function set"<<std::endl;
   fn = _fn;
   user_data = _user_data;
 }

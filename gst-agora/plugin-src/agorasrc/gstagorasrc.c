@@ -335,7 +335,7 @@ static void
 gst_agorasrc_init (Gstagorasrc * agoraSrc)
 {
 
-  gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
+//  gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
   gst_base_src_set_blocksize  (GST_BASE_SRC (agoraSrc), 10*1024);
 
   g_print("agorasrc instance has been initialized\n");
