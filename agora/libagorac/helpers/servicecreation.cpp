@@ -3,6 +3,8 @@
 //
 
 #include "servicecreation.h"
+#include "log.h"
+#include <iostream>
 
 agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
                                                       bool enableAudioProcessor, bool enableVideo,bool enableuseStringUid,bool enablelowDelay,const char* appid) {
