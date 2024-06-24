@@ -15,7 +15,7 @@
 #include "helpers/servicecreation.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
-  appid = std::string(agora_config->appid)
+  appid = std::string(agora_config->app_id)
   channel = agora_config->ch_id;
   remote_uid = agora_config->remote_user_id;
   service = nullptr;

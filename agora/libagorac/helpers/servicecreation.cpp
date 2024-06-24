@@ -6,6 +6,64 @@
 #include "log.h"
 #include <iostream>
 
+int verifyLicense()
+{
+#ifdef LICENSE_CHECK
+  // Step1: read the certificate buffer from the certificate.bin file
+  std::cout<<"licences: "<<std::endl;
+  char* cert_buffer = NULL;
+  int cert_length = 0;
+  std::ifstream f_cert(CERTIFICATE_FILE.c_str(), std::ios::binary);
+  if (f_cert) {
+    f_cert.seekg(0, f_cert.end);
+    cert_length = f_cert.tellg();
+    f_cert.seekg(0, f_cert.beg);
+
+    cert_buffer = new char[cert_length + 1];
+    AG_LOG(INFO, "cert_length: %d", cert_length);
+    memset(cert_buffer, 0, cert_length + 1);
+    f_cert.read(cert_buffer, cert_length);
+    if (!cert_buffer || f_cert.gcount() < cert_length) {
+      f_cert.close();
+      if (cert_buffer) {
+        delete[] cert_buffer;
+        cert_buffer = NULL;
+      }
+      AG_LOG(ERROR, "read %s failed", CERTIFICATE_FILE.c_str());
+      return -1;
+    }
+    else {
+      f_cert.close();
+    }
+  }
+  else {
+    AG_LOG(ERROR, "%s doesn't exist", CERTIFICATE_FILE.c_str());
+    return -1;
+  }
+  AG_LOG(INFO, "certificate: %s", cert_buffer);
+
+  // Step3: register callback of license state
+  LicenseCallbackImpl *cb = static_cast<LicenseCallbackImpl *>(getAgoraLicenseCallback());
+  if (!cb) {
+    cb = new LicenseCallbackImpl();
+    setAgoraLicenseCallback(static_cast<agora::base::LicenseCallback *>(cb));
+  }
+
+  // Step4: verify the license with credential and certificate
+  int result = getAgoraCertificateVerifyResult(NULL, 0, cert_buffer, cert_length);
+  AG_LOG(INFO, "verify result: %d", result);
+
+  if (cert_buffer) {
+    delete[] cert_buffer;
+    cert_buffer = NULL;
+  }
+
+  return result;
+#else
+  return 0;
+#endif
+}
+
 agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
                                                       bool enableAudioProcessor, bool enableVideo,bool enableuseStringUid,bool enablelowDelay,const char* appid) {
   int32_t buildNum = 0;
