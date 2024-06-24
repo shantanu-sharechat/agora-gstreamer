@@ -32,6 +32,7 @@ bool AgoraIO::initializeService(){
   scfg.enableAudioProcessor = true;
   scfg.enableAudioDevice = false;
   scfg.enableVideo = true;
+  AG_LOG(INFO, "Setting after video");
   if (service->initialize(scfg) != agora::ERR_OK)
   {
     AG_LOG(ERROR, "Error initialize Agora SDK");
