@@ -341,7 +341,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   g_print("agorasrc instance has been initialized\n");
 
   //set it initially to null
-  agoraSrc->agora_ctx=nullptr;
+  agoraSrc->agora_ctx=NULL;
    
   //set app_id and channel_id to zero
   memset(agoraSrc->app_id, 0, MAX_STRING_LEN);
