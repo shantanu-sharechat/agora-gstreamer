@@ -43,7 +43,7 @@ bool AgoraIO::createConnection(){
   ccfg.autoSubscribeVideo = true;
   ccfg.enableAudioRecordingOrPlayout =false;
   connection = service->createRtcConnection(ccfg);
-  if (!connection)
+  if (!connection.get())
   {
     AG_LOG(ERROR, "Error create connection");
     return false;
