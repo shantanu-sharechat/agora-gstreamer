@@ -5,6 +5,7 @@
 #include "servicecreation.h"
 #include "log.h"
 #include <iostream>
+#include "AgoraBase.h"
 
 int verifyLicense()
 {
