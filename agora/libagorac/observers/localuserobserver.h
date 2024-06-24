@@ -177,9 +177,9 @@ public:
   void onVideoSizeChanged(agora::user_id_t userId, int width, int height, int rotation) {}
   void onActiveSpeaker(agora::user_id_t userId){}
 
-  void onLocalAudioTrackStateChanged(agora::agora_refptr<rtc::ILocalAudioTrack> audioTrack,
-                                             LOCAL_AUDIO_STREAM_STATE state,
-                                             LOCAL_AUDIO_STREAM_ERROR errorCode) override {}
+  void onLocalAudioTrackStateChanged(agora::agora_refptr<agora::rtc::ILocalAudioTrack> audioTrack,
+                                     agora::rtc::LOCAL_AUDIO_STREAM_STATE state,
+                                     agora::rtc::LOCAL_AUDIO_STREAM_ERROR errorCode) override {}
 private:
 
   agora::rtc::MixerLayoutConfig calculate_layout(int width,int height);
