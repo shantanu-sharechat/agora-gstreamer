@@ -320,6 +320,8 @@ gst_agorasrc_class_init (GstagorasrcClass * klass)
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&src_factory));
 
+  g_print("agorasrc class has been initialized\n");
+
 }
 
 /* initialize the new element
@@ -333,6 +335,8 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
 
   gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
   gst_base_src_set_blocksize  (GST_BASE_SRC (agoraSrc), 10*1024);
+
+  g_print("agorasrc instance has been initialized\n");
 
   //set it initially to null
   agoraSrc->agora_ctx=NULL;
