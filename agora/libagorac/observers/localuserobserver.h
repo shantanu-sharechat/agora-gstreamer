@@ -177,7 +177,7 @@ public:
   void onVideoSizeChanged(agora::user_id_t userId, int width, int height, int rotation) {}
   void onActiveSpeaker(agora::user_id_t userId){}
 
-  void onLocalAudioTrackStateChanged(agora_refptr<rtc::ILocalAudioTrack> audioTrack,
+  void onLocalAudioTrackStateChanged(agora::agora_refptr<rtc::ILocalAudioTrack> audioTrack,
                                              LOCAL_AUDIO_STREAM_STATE state,
                                              LOCAL_AUDIO_STREAM_ERROR errorCode) override {}
 private:
