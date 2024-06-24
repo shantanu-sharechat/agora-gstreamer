@@ -11,7 +11,7 @@
 #include "helpers/log.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
-  appid = agora_config->app_id;
+  appid = std::string(agora_config->app_id);
   channel = agora_config->ch_id;
   remote_uid = agora_config->remote_user_id;
   service = nullptr;
@@ -28,6 +28,7 @@ bool AgoraIO::initializeService(){
   agora::base::AgoraServiceConfiguration scfg;
   AG_LOG(INFO, "Setting before appid");
   scfg.appId = appid.c_str();
+  std::cout<<"Appid: "<<scfg.appId<<"\n";
   AG_LOG(INFO, "Setting after appid");
   scfg.enableAudioProcessor = true;
   scfg.enableAudioDevice = false;
