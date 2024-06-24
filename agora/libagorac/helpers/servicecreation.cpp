@@ -85,6 +85,7 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
   if(enablelowDelay){
     scfg.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_CLOUD_GAMING;
   }
+  AG_LOG(INFO, "Before init");
   if (service->initialize(scfg) != agora::ERR_OK) {
     return nullptr;
   }
