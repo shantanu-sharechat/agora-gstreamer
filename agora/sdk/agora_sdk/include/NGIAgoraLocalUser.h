@@ -11,6 +11,7 @@
 
 #include "AgoraBase.h"
 #include "AgoraOptional.h"
+#include "AgoraRefPtr.h"
 
 namespace agora {
 namespace media {
