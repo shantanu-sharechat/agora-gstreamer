@@ -357,6 +357,7 @@ gst_agorasrc_set_property (GObject * object, guint prop_id,
   Gstagorasrc *agoraSrc = GST_AGORASRC (object);
 
   const gchar* str;
+  g_print("setting property %d\n", prop_id);
 
   switch (prop_id) {
     case PROP_VERBOSE:
@@ -420,6 +421,8 @@ gst_agorasrc_get_property (GObject * object, guint prop_id,
 static gboolean
 agorasrc_init (GstPlugin * agorasrc)
 {
+
+  g_print("agorasrc_init called");
 
   /* debug category for fltering log messages
    *
