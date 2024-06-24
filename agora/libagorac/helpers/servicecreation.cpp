@@ -6,6 +6,8 @@
 #include "log.h"
 #include <iostream>
 #include "AgoraBase.h"
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
 
 int verifyLicense()
 {
@@ -87,6 +89,7 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
     scfg.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_CLOUD_GAMING;
   }
   AG_LOG(INFO, "Before init");
+  std::this_thread::sleep_for (std::chrono::seconds(1));
   if (service->initialize(scfg) != agora::ERR_OK) {
     return nullptr;
   }
