@@ -2,6 +2,8 @@
 // Created by Shantanu  Sharma on 21/06/24.
 //
 
+#include<stdio.h>
+
 #include "agoraio.h"
 #include "IAgoraService.h"
 #include "AgoraBase.h"
