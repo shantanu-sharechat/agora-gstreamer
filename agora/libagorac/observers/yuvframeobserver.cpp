@@ -6,7 +6,7 @@
 #include<iostream>
 
 void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid, const agora::media::base::VideoFrame* frame){
-  std::cout<<"Frame received "<< "ts: "<<frame->renderTimeMs<<" width: "<<frame->width<<std::endl;
+  std::cout<<"Frame received "<< "ts: "<<frame->renderTimeMs<<" width: "<<frame->width << " height: "<<frame->height<<std::endl;
   const int len = frame->height * frame->width * 3 / 2;
   uint8_t* buffer = new uint8_t[len];
   const int ySize = frame->yStride * frame->height;
