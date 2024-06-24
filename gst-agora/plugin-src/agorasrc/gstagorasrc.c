@@ -270,6 +270,7 @@ gst_media_test_src_start (GstBaseSrc * basesrc)
 static void
 gst_agorasrc_class_init (GstagorasrcClass * klass)
 {
+  g_print("agorasrc class has been started");
   GObjectClass *gobject_class;
   GstElementClass *gstelement_class;
 
