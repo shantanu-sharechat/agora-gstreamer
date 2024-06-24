@@ -20,6 +20,11 @@ AgoraIO::AgoraIO(agora_config_t* agora_config) {
 bool AgoraIO::initializeService(){
   AG_LOG(INFO, "Initializing Agora SDK service");
   service = createAgoraService();
+  if (service == nullptr)
+  {
+    AG_LOG(ERROR, "Error create Agora SDK service");
+    return false;
+  }
   agora::base::AgoraServiceConfiguration scfg;
   AG_LOG(INFO, "Setting before appid");
   scfg.appId = appid.c_str();
