@@ -72,7 +72,7 @@ G_DECLARE_FINAL_TYPE (Gstagorasrc, gst_agorasrc,
 
 #define MAX_STRING_LEN  1024
 
-struct _Gstagorasrc
+typedef struct _Gstagorasrc
 {
   GstPushSrc element;
 
@@ -89,11 +89,11 @@ struct _Gstagorasrc
   gchar channel_id[MAX_STRING_LEN];
   gchar remote_user_id[MAX_STRING_LEN];
 
-};
-
-typedef struct _Gstagorasrc {
-  GstElementClass parent_class;
 } Gstagorasrc;
+
+typedef struct _GstagorasrcClass {
+  GstElementClass parent_class;
+} GstagorasrcClass;
 
 G_END_DECLS
 
