@@ -99,30 +99,13 @@ struct RtmpStreamingVideoConfiguration {
   unsigned int gopInMs;
 
   /**
-   *  Whether the encoder enables hard coding or soft coding.
-   *  The default value is 0.
-   *  0: default
-   *  1: hardware encoder
-   *  2: software encoder
-   */
-  int encoderHwSwMode;
-
-  /**
-   *  Whether the encoder enables CBR coding or VBR coding.
-   *  The default value is 0.
-   *  0: CBR
-   *  1: VBR
-   */
-  int encoderBitrateControlMode;
-
-  /**
    * The orientation mode.
    * See {@link ORIENTATION_MODE ORIENTATION_MODE}.
    */
   ORIENTATION_MODE orientationMode;
 
   RtmpStreamingVideoConfiguration(): width(640), height(360), framerate(15),
-      bitrate(800), maxBitrate(960), minBitrate(600), gopInMs(2000), encoderHwSwMode(0),encoderBitrateControlMode(0),
+      bitrate(800), maxBitrate(960), minBitrate(600), gopInMs(2000),
       orientationMode(ORIENTATION_MODE_ADAPTIVE) {}
 };
 
@@ -231,9 +214,7 @@ struct RtmpConnectionConfiguration {
   RtmpStreamingAudioConfiguration audioConfig;
   RtmpStreamingVideoConfiguration videoConfig;
   bool enableWriteFlvFile;
-  bool audioOnly;
-  RtmpConnectionConfiguration() : enableWriteFlvFile(false), 
-                                  audioOnly(false) {}
+  RtmpConnectionConfiguration() : enableWriteFlvFile(false) {}
 };
 
 /**
@@ -294,13 +275,11 @@ class IRtmpConnectionObserver {
   /**
    * Occurs every 1s when the connection transmits data, report the current video bitrate, audio bitrate and video framerate.
    *
-   * @param video_width The width of the video frame actually pushed out
-   * @param video_height The height of the video frame actually pushed out
-   * @param video_bitrate The actual bitrate of the video stream being pushed out
-   * @param audio_bitrate The actual bitrate of the audio stream being pushed out
-   * @param video_frame_rate The frame rate of the video stream actually pushed out
+   * @param video_bitrate video_bitrate.
+   * @param audio_bitrate audio_bitrate.
+   * @param video_frame_rate video_frame_rate.
    */
-  virtual void onTransferStatistics(uint64_t video_width,  uint64_t video_height, uint64_t video_bitrate, uint64_t audio_bitrate, uint64_t video_frame_rate, uint64_t push_video_frame_cnt, uint64_t pop_video_frame_cnt) = 0;
+  virtual void onTransferStatistics(uint64_t video_bitrate, uint64_t audio_bitrate, uint64_t video_frame_rate, uint64_t push_video_frame_cnt, uint64_t pop_video_frame_cnt) = 0;
 
   virtual ~IRtmpConnectionObserver() {}
 };
@@ -317,7 +296,7 @@ class IRtmpConnectionObserver {
  */
 class IRtmpConnection : public RefCountInterface {
  public:
-    ~IRtmpConnection() {}
+    ~IRtmpConnection() {};
 
   /**
    * Connects to a RTMP server.

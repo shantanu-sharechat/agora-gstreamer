@@ -52,7 +52,7 @@ public:
    * - 0: Success.
    * - < 0: Failure.
    */
-  virtual int openWithCustomSource(int64_t startPos, media::base::IMediaPlayerCustomDataProvider* provider) __deprecated = 0;
+  virtual int openWithCustomSource(int64_t startPos, media::base::IMediaPlayerCustomDataProvider* provider) = 0;
 
   /**
    * Opens a media file with a media file source.
@@ -154,6 +154,38 @@ public:
   virtual int setLoopCount(int64_t loopCount) = 0;
 
   /**
+   * Mute the audio playing
+   * @param audio_mute : mute or unmute audio
+   * @return
+   * - 0: Success.
+   * - < 0: Failure.
+   */
+  virtual int muteAudio(bool audio_mute) = 0;
+
+  /**
+   * Gets whehter audio is muted
+   * @param None
+   * @return true or false
+   */
+  virtual bool isAudioMuted() = 0;
+
+  /**
+   * Mute the audio playing
+   * @param audio_mute : mute or unmute audio
+   * @return
+   * - 0: Success.
+   * - < 0: Failure.
+   */
+  virtual int muteVideo(bool audio_mute) = 0;
+
+  /**
+   * Gets whehter audio is muted
+   * @param None
+   * @return true or false
+   */
+  virtual bool isVideoMuted() = 0;
+
+  /**
    * Changes the playback speed.
    * @param speed The playback speed ref [50-400].
    * @return
@@ -170,23 +202,6 @@ public:
    * - < 0: Failure. See {@link media::base::MEDIA_PLAYER_ERROR MEDIA_PLAYER_ERROR}.
    */
   virtual int selectAudioTrack(int64_t index) = 0;
-
-  /**
-   * Selects multi audio track of the media file for playback or publish to channel.
-   * @param playoutTrackIndex The index of the audio track in media file for local playback.
-   * @param publishTrackIndex The index of the audio track in the media file published to the remote.
-   *
-   * @note
-   * You can obtain the streamIndex of the audio track by calling getStreamInfo..
-   * If you want to use selectMultiAudioTrack, you need to open the media file with openWithMediaSource and set enableMultiAudioTrack to true.
-   *
-   * @return
-   * - 0: Success.
-   * - < 0: Failure. See {@link media::base::MEDIA_PLAYER_ERROR MEDIA_PLAYER_ERROR}.
-   * - -2: Invalid argument. Argument must be greater than or equal to zero.
-   * - -8: Invalid State.You must open the media file with openWithMediaSource and set enableMultiAudioTrack to true
-   */
-  virtual int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex) = 0;
 
   /**
    * Changes the player option before playing a file.
@@ -264,21 +279,21 @@ public:
   /**
    * Registers the audio frame observer.
    *
-   * @param observer The pointer to the {@link media::IAudioPcmFrameSink observer} object.
+   * @param observer The pointer to the {@link media::base::IAudioFrameObserver IAudioFrameObserver} object.
    * @return
    * - 0: Success.
    * - < 0: Failure. See {@link media::base::MEDIA_PLAYER_ERROR MEDIA_PLAYER_ERROR}.
    */
-  virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
+  virtual int registerAudioFrameObserver(media::base::IAudioFrameObserver* observer) = 0;
 
   /**
    * Releases the audio frame observer.
-   * @param observer The pointer to the {@link media::IAudioPcmFrameSink observer} object.
+   * @param observer The pointer to the {@link media::base::IAudioFrameObserver IAudioFrameObserver} object.
    * @return
    * - 0: Success.
    * - < 0: Failure. See {@link media::base::MEDIA_PLAYER_ERROR MEDIA_PLAYER_ERROR}.
    */
-  virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
+  virtual int unregisterAudioFrameObserver(media::base::IAudioFrameObserver* observer) = 0;
 
   /**
    * Open the Agora CDN media source.
@@ -406,9 +421,9 @@ class IMediaPlayerSourceObserver {
    * @brief Reports current playback progress.
    *
    * The callback occurs once every one second during the playback and reports the current playback progress.
-   * @param position Current playback progress (milisecond).
+   * @param position Current playback progress (second).
    */
-  virtual void onPositionChanged(int64_t position_ms) = 0;
+  virtual void onPositionChanged(int64_t position) = 0;
 
   /**
    * @brief Reports the playback event.

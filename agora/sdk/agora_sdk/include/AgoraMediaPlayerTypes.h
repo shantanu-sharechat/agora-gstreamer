@@ -7,7 +7,9 @@
 #pragma once  // NOLINT(build/header_guard)
 
 #include <cstring>
-#include <stdint.h>
+#if __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1800)
+#include <cstdint>
+#endif
 
 #include "AgoraOptional.h"
 
@@ -296,7 +298,7 @@ struct PlayerStreamInfo {
   /** The number of bits per sample if the stream is audio. */
   int audioBitsPerSample;
 
-  /** The total duration (millisecond) of the media stream. */
+  /** The total duration (second) of the media stream. */
   int64_t duration;
 
   PlayerStreamInfo() : streamIndex(0),
@@ -419,44 +421,22 @@ struct MediaSource {
    */
   int64_t startPos;
   /**
-   * Determines whether to autoplay after opening a media resource.
-   * - true: (Default) Autoplay after opening a media resource.
-   * - false: Do not autoplay after opening a media resource.
-   */
+  * Autoplay when media source is opened
+  *
+  */
   bool autoPlay;
   /**
-   * Determines whether to enable cache streaming to local files. If enable cached, the media player will
-   * use the url or uri as the cache index.
-   *
-   * @note
-   * The local cache function only supports on-demand video/audio streams and does not support live streams.
-   * Caching video and audio files based on the HLS protocol (m3u8) to your local device is not supported.
-   *
-   * - true: Enable cache.
-   * - false: (Default) Disable cache.
+   * Enable caching.
    */
   bool enableCache;
   /**
-   * Determines whether to enable multi-track audio stream decoding.
-   * Then you can select multi audio track of the media file for playback or publish to channel
-   *
-   * @note
-   * If you use the selectMultiAudioTrack API, you must set enableMultiAudioTrack to true.
-   *
-   * - true: Enable MultiAudioTrack;.
-   * - false: (Default) Disable MultiAudioTrack;.
-   */
-  bool enableMultiAudioTrack;
-  /**
-   * Determines whether the opened media resource is a stream through the Agora Broadcast Streaming Network(CDN).
-   * - true: It is a stream through the Agora Broadcast Streaming Network.
-   * - false: (Default) It is not a stream through the Agora Broadcast Streaming Network.
+   * if the value is true, it means playing agora URL. 
+   * The default value is false
    */
   Optional<bool> isAgoraSource;
   /**
-   * Determines whether the opened media resource is a live stream. If is a live stream, it can speed up the opening of media resources.
-   * - true: It is a live stream.
-   * - false: (Default) It is not is a live stream.
+   * If it is set to true, it means that the live stream will be optimized for quick start. 
+   * The default value is false
    */
   Optional<bool> isLiveSource;
   /**
@@ -465,7 +445,7 @@ struct MediaSource {
   IMediaPlayerCustomDataProvider* provider;
 
   MediaSource() : url(NULL), uri(NULL), startPos(0), autoPlay(true), enableCache(false),
-                  enableMultiAudioTrack(false), provider(NULL){
+                  provider(NULL){
   }
 };
 

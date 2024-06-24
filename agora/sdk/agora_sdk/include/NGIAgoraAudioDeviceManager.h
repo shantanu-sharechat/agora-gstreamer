@@ -10,6 +10,7 @@
 
 #include "AgoraBase.h"
 #include "AgoraRefPtr.h"
+
 namespace agora {
 namespace media {
 namespace base {
@@ -19,24 +20,47 @@ class IAudioFrameObserver;
 
 namespace rtc {
 
+static const int kAdmMaxDeviceNameSize = 128;
+static const int kAdmMaxGuidSize = 128;
 static const int kIntervalInMillseconds = 200;
 
 
+#if defined(_WIN32) || (defined(__APPLE__) && TARGET_OS_MAC && !TARGET_OS_IPHONE) 
 /**
- * The struct of LoopbackRecordingOption
+ * The struct of AudioDeviceInfo.
  *
  * @note
+ * This struct applies to Windows and macOS only.
  */
-struct LoopbackRecordingOption {
+struct AudioDeviceInfo {
   /**
-   * the name of the device. the maximum name size is 128 bytes. the default value is 0.
+   * The name of the device. The maximum name size is 128 bytes. The default value is 0.
    */
-  Optional<const char *> deviceName;
+  char deviceName[kAdmMaxDeviceNameSize];
   /**
-   * allow output device change when enable loopback recording.
+   * The ID of the device. The maximum size is 128 bytes. The default value is 0.
    */
-  Optional<bool> allowDeviceChange;
+  char deviceId[kAdmMaxGuidSize];
+  /**
+   * Determines whether the current device is selected for audio capturing or playback.
+   * - true: Select the current device for audio capturing or playback.
+   * - false: (Default) Do not select the current device for audio capturing or playback.
+   */
+  bool isCurrentSelected;
+  /**
+   * Determines whether the current device is the audio playout device.
+   * - true: (Default) The current device is the playout device.
+   * - false: The current device is not the playout device.
+   */
+  bool isPlayoutDevice;
+
+  AudioDeviceInfo() : isCurrentSelected(false),
+                      isPlayoutDevice(true) {
+    memset(deviceName, 0, sizeof(deviceName));
+    memset(deviceId, 0, sizeof(deviceId));
+  }
 };
+#endif  // _WIN32 || (TARGET_OS_MAC && !TARGET_OS_IPHONE)
 
 /**
  * The IAudioDeviceManagerObserver class.
@@ -55,7 +79,7 @@ public:
 
   /**
    * Occurs when the device state changes, for example, when a device is added or removed or default device change.
-   *
+   * 
    * @note
    * This method applies to Windows only now.
    *
@@ -65,20 +89,18 @@ public:
    */
   virtual void onAudioDeviceStateChanged(const char *deviceId, int deviceType, int deviceState) = 0;
 
-  /** Indicates incoming volume. This can be used to test microphone or speaker.
+  /** Indicates incoming volume. This can be used to test microphone.
    *
-   * @param deviceType Device type: #MEDIA_DEVICE_TYPE.
    * @param volume volume between 0 (lowest volume) to 255 (highest volume).
    */
-  virtual void onVolumeIndication(int deviceType, int volume) = 0;
+  virtual void onVolumeIndication(int volume) = 0;
 
   /**
    * Occurs when the audio route changes.
    *
-   * @param deviceType Device type: #MEDIA_DEVICE_TYPE.
    * @param route The current audio route. See #AudioRoute.
    */
-  virtual void onRoutingChanged(int deviceType, AudioRoute route) = 0;
+  virtual void onRoutingChanged(AudioRoute route) = 0;
 
   /**
    * Occurs when the audio device volume changes.
@@ -126,7 +148,7 @@ class IRecordingDeviceSource : public RefCountInterface {
    * - 0: Success.
    * - < 0: Failure.
    */
-    virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
+    virtual int registerAudioFrameObserver(media::base::IAudioFrameObserver* observer) = 0;
 
   /**
    * Releases the registered IAudioFrameObserver object.
@@ -136,15 +158,7 @@ class IRecordingDeviceSource : public RefCountInterface {
    * - 0: Success.
    * - < 0: Failure.
    */
-    virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
-
-  /**
-   * Set parameter to object loopback device;
-   * @param option
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-    virtual int setLoopbackDeviceParameter(const LoopbackRecordingOption &option) = 0;
+    virtual int unregisterAudioFrameObserver(media::base::IAudioFrameObserver* observer) = 0;
 
     virtual ~IRecordingDeviceSource() {}
 };
@@ -284,18 +298,6 @@ public:
    */
   virtual int changeAudioRouting(AudioRoute route) = 0;
   /**
-   * Changes the speaker status on/off.
-   *
-   * @note
-   * This method applies to Android and iOS only.
-   *
-   * @param enable on/off
-   * @return
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-  virtual int setAudioRoutingSpeakerOn(bool enable) = 0;
-  /**
    * Gets the current audio routing.
    *
    * @note
@@ -309,7 +311,7 @@ public:
   virtual int getCurrentRouting(AudioRoute& route) = 0;
 #endif  // __ANDROID__ || TARGET_OS_IPHONE
 
-#if defined(_WIN32) || (defined(__APPLE__) && TARGET_OS_MAC && !TARGET_OS_IPHONE)
+#if defined(_WIN32) || (defined(__APPLE__) && TARGET_OS_MAC && !TARGET_OS_IPHONE) 
   /**
    * Gets the index numbers of all audio playout devices.
    *
@@ -379,31 +381,6 @@ public:
    * - < 0: Failure.
    */
   virtual int setRecordingDevice(int index) = 0;
-  /** The status of following system default playback device.
-
-   @note The status of following system default playback device.
-
-   @param enable Variable to whether the current device follow system default playback device or not.
-   - true: The current device will change when the system default playback device changed.
-   - false: The current device will change only current device is removed.
-   @return
-   - 0: Success.
-   - < 0: Failure.
-   */
-  virtual int followSystemPlaybackDevice(bool enable) = 0;
-
-  /** The status of following system default recording device.
-
-   @note The status of following system default recording device.
-
-   @param enable Variable to whether the current device follow system default recording device or not.
-   - true: The current device will change when the system default recording device changed.
-   - false: The current device will change only current device is removed.
-   @return
-   - 0: Success.
-   - < 0: Failure.
-   */
-  virtual int followSystemRecordingDevice(bool enable) = 0;
 #endif  // _WIN32 || (TARGET_OS_MAC && !TARGET_OS_IPHONE)
 
 #if defined(_WIN32)
@@ -457,41 +434,6 @@ public:
    * - < 0: Failure.
    */
   virtual int getApplicationMuteState(bool& mute) = 0;
-  /**
-   * Gets the information of the current audio loopback device.
-   *
-   * @note
-   * This method applies to Windows or macOS only.
-   *
-   * @param index The index number of the current audio playout device.
-   * @return
-   * The information of the audio playout device. See \ref agora::rtc::AudioDeviceInfo "AudioDeviceInfo".
-   */
-  virtual AudioDeviceInfo getLoopbackDeviceInfo(int index) = 0;
-  /**
-   * Sets the audio loopback device.
-   *
-   * @note
-   * This method applies to Windows only.
-   *
-   * @param index The index number of the audio playout device.
-   * @return
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-  virtual int setLoopbackDevice(int index) = 0;
-  /** The status of following system default loopback device.
-
-   @note The status of following system default loopback device.
-
-   @param enable Variable to whether the current device follow system default loopback device or not.
-   - true: The current device will change when the system default loopback device changed.
-   - false: The current device will change only current device is removed.
-   @return
-   - 0: Success.
-   - < 0: Failure.
-   */
-  virtual int followSystemLoopbackDevice(bool enable) = 0;
 #endif  // _WIN32
 
   /**
@@ -514,8 +456,6 @@ public:
    * - < 0: Failure.
    */
   virtual int unregisterObserver(IAudioDeviceManagerObserver* observer) = 0;
-
-  virtual int setupAudioAttributeContext(void* audioAttr) = 0;
 
 protected:
   ~INGAudioDeviceManager() {}

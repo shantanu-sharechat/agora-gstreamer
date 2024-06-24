@@ -54,7 +54,6 @@ struct RawPixelBuffer {
     kI422,
     kNV21,
     kNV12,
-    kI010,
     kRGBA,
     kARGB,
     kBGRA
@@ -183,10 +182,6 @@ struct VideoFrameDataV2 : public VideoFrameData {
 
 OPTIONAL_ENUM_CLASS VideoFrameMetaDataType {
   kAlphaChannel,
-  kScreenMetaInfo,
-  kVideoSourceType,
-  kFaceInfo,
-  kFaceCaptureInfo,
   // Add other types afterwards
 };
 
@@ -194,8 +189,6 @@ struct AlphaChannel {
   uint8_t* data;
   int size;
 };
-
-typedef int32_t VideoSourceType;
 
 /**
  * The IVideoFrame class defines the interface to

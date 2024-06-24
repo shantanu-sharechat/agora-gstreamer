@@ -22,26 +22,12 @@ struct ExtensionVersion {
   ExtensionVersion(int majorV, int minorV = 0, int microV = 0)
     : major_v(majorV), minor_v(minorV), micro_v(microV) {}
 
+  bool operator<(const ExtensionVersion& other) const {
+    return major_v < other.major_v || minor_v < other.minor_v || micro_v < other.micro_v;
+  }
+
   bool operator==(const ExtensionVersion& other) const {
     return major_v == other.major_v && minor_v == other.minor_v && micro_v == other.micro_v;
-  }
-
-  bool operator>(const ExtensionVersion& other) const {
-    return major_v > other.major_v || (major_v == other.major_v && minor_v > other.minor_v)
-           || (major_v == other.major_v && minor_v == other.minor_v && micro_v > other.micro_v);
-  }
-
-  bool operator<(const ExtensionVersion& other) const {
-    return major_v < other.major_v || (major_v == other.major_v && minor_v < other.minor_v)
-           || (major_v == other.major_v && minor_v == other.minor_v && micro_v < other.micro_v);
-  }
-
-  bool operator<=(const ExtensionVersion& other) const {
-    return !operator>(other);
-  }
-
-  bool operator>=(const ExtensionVersion& other) const {
-    return !operator<(other);
   }
 };
 
@@ -56,45 +42,36 @@ struct ExtensionVersion {
 
 class IExtensionProvider;
 class IExtensionProviderV2;
-class IExtensionProviderV3;
 class IAudioFilter;
 class IExtensionVideoFilter;
-class IScreenCaptureSource;
 
 template <class T>
 struct ExtensionInterfaceVersion;
 
 template <>
 struct ExtensionInterfaceVersion<IExtensionProvider> {
-  static ExtensionVersion Version() {
+  static ExtensionVersion version() {
     return ExtensionVersion(1, 0, 0);
   }
 };
 
 template <>
 struct ExtensionInterfaceVersion<IExtensionProviderV2> {
-  static ExtensionVersion Version() {
-    return BUMP_MAJOR_VERSION(ExtensionInterfaceVersion<IExtensionProvider>::Version());
+  static ExtensionVersion version() {
+    return BUMP_MAJOR_VERSION(ExtensionInterfaceVersion<IExtensionProvider>::version());
   }
 };
 
 template <>
 struct ExtensionInterfaceVersion<IAudioFilter> {
-  static ExtensionVersion Version() {
+  static ExtensionVersion version() {
     return ExtensionVersion(1, 0, 0);
   }
 };
 
 template <>
 struct ExtensionInterfaceVersion<IExtensionVideoFilter> {
-  static ExtensionVersion Version() {
-    return ExtensionVersion(1, 0, 0);
-  }
-};
-
-template <>
-struct ExtensionInterfaceVersion<IScreenCaptureSource> {
-  static ExtensionVersion Version() {
+  static ExtensionVersion version() {
     return ExtensionVersion(1, 0, 0);
   }
 };

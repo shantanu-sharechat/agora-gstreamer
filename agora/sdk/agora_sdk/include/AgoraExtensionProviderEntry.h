@@ -19,7 +19,7 @@ AGORA_API void AGORA_CALL registerProviderEntry(const char*, agora_ext_entry_fun
 static void register_##PROVIDER_NAME##_to_agora() {                                                        \
   auto control = getAgoraExtensionControl();                                                               \
    agora::rtc::ExtensionVersion version =                                                                  \
-      agora::rtc::ExtensionInterfaceVersion<PROVIDER_INTERFACE_USED>::Version();                             \
+      agora::rtc::ExtensionInterfaceVersion<PROVIDER_INTERFACE_USED>::version();                             \
   declareProviderVersion(#PROVIDER_NAME, version);                                                         \
   if (#PROVIDER_NAME && control) {                                                                         \
     control->registerProvider(#PROVIDER_NAME,                                                              \
@@ -39,8 +39,8 @@ static void _##PROVIDER_NAME##_provider_entry() {                               
 #define REGISTER_AGORA_EXTENSION_PROVIDER(PROVIDER_NAME, PROVIDER_CLASS, PROVIDER_INTERFACE_USED, ...)     \
 DECLARE_CREATE_AND_REGISTER_PROVIDER(PROVIDER_NAME, PROVIDER_CLASS, PROVIDER_INTERFACE_USED, __VA_ARGS__); \
 static int _##PROVIDER_NAME##_provider_entry() {                                                           \
-  registerProviderEntry(#PROVIDER_NAME, register_##PROVIDER_NAME##_to_agora);                              \
-  return 0;                                                                                                \
+   registerProviderEntry(#PROVIDER_NAME, register_##PROVIDER_NAME##_to_agora);                             \
+   return 0;                                                                                               \
 }                                                                                                          \
 const int DUMMY_AGORA_REGEXT_##PROVIDE_NAME##_VAR = _##PROVIDER_NAME##_provider_entry();                   \
 

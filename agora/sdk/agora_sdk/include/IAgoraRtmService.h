@@ -6,7 +6,9 @@
 //
 #pragma once
 
-#include <stdint.h>
+#if __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1800)
+#include <cstdint>
+#endif
 
 namespace agora {
 

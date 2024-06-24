@@ -13,10 +13,6 @@
 #endif
 #endif
 
-namespace webrtc {
-struct AudioFrameHandleInfo;
-}  // namespace webrtc
-
 namespace agora {
 namespace rtc {
 /**
@@ -435,10 +431,10 @@ class IVideoSinkBase : public RefCountInterface {
 class IMediaExtensionObserver : public RefCountInterface {
 public:
   virtual ~IMediaExtensionObserver() {}
-  virtual void onEvent(const char* provider, const char* extension, const char* key, const char* json_value) {}
-  virtual void onExtensionStopped(const char* provider, const char* extension) {}
-  virtual void onExtensionStarted(const char* provider, const char* extension) {}
-  virtual void onExtensionError(const char* provider, const char* extension, int error, const char* message) {}
+  virtual void onEvent(const char* provider_name, const char* ext_name, const char* key, const char* json_value) {}
+  virtual void onExtensionStopped(const char* provider_name, const char* ext_name) {}
+  virtual void onExtensionStarted(const char* provider_name, const char* ext_name) {}
+  virtual void onExtensionErrored(const char* provider_name, const char* ext_name, int error, const char* msg) {}
 };
 
 /**
@@ -462,11 +458,11 @@ class IAudioPcmDataSender : public RefCountInterface {
    * - < 0: Failure.
    */
   virtual int sendAudioPcmData(
-      const void* audio_data, uint32_t capture_timestamp, int64_t presentation_ms,
+      const void* audio_data, uint32_t capture_timestamp,
       const size_t samples_per_channel,  // for 10ms Data, number_of_samples * 100 = sample_rate
       const agora::rtc::BYTES_PER_SAMPLE bytes_per_sample,     // 2
       const size_t number_of_channels,
-      const uint32_t sample_rate) = 0; // sample_rate > 8000)
+      const uint32_t sample_rate) = 0;  // sample_rate > 8000
 
  protected:
   ~IAudioPcmDataSender() {}

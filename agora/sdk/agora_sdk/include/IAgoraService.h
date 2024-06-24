@@ -10,10 +10,6 @@
 #include "AgoraOptional.h"
 
 namespace agora {
-class ILocalDataChannel;
-class IRemoteDataChannel;
-struct DataChannelConfig;
-
 namespace rtc {
 class IRtcConnection;
 class IRtmpConnection;
@@ -28,7 +24,6 @@ class IMediaPlayerSource;
 class IMediaStreamingSource;
 class ICameraCapturer;
 class IScreenCapturer;
-class IScreenCapturer2;
 class IAudioPcmDataSender;
 class IAudioEncodedFrameSender;
 class IVideoFrameSender;
@@ -49,7 +44,6 @@ class IAudioDeviceManagerObserver;
 class IMediaExtensionObserver;
 class IExtensionProvider;
 class IFileUploaderService;
-class IConfigCenter;
 /**
  * The audio encoder configuration.
  */
@@ -58,17 +52,27 @@ struct AudioEncoderConfiguration {
    * The audio profile: #AUDIO_PROFILE_TYPE
    */
   AUDIO_PROFILE_TYPE audioProfile;
+  // absl::optional<DtxStatus> dtx;
+  // double bitrate_priority = 1.0;
+  // absl::optional<int> ptime;
+  // FEC parameters
+  // Rtx parameters
 
   AudioEncoderConfiguration() : audioProfile(AUDIO_PROFILE_DEFAULT) {}
 };
 
 }  // namespace rtc
 
+namespace signaling {
+class ISignalingEngine;
+}
+
 namespace rtm {
 class IRtmService;
 }
 
 namespace base {
+class IEngineBase;
 class IServiceObserver;
 
 /**
@@ -119,12 +123,6 @@ struct AgoraServiceConfiguration {
   /** The channel profile. For details, see \ref agora::CHANNEL_PROFILE_TYPE "CHANNEL_PROFILE_TYPE". The default channel profile is `CHANNEL_PROFILE_LIVE_BROADCASTING`.
    */
   agora::CHANNEL_PROFILE_TYPE channelProfile;
-
-  /**
-   * The license used for verification when connectting channel. Charge according to the license
-   */
-  const char* license;
-
   /**
    * The audio scenario. See \ref agora::rtc::AUDIO_SCENARIO_TYPE "AUDIO_SCENARIO_TYPE". The default value is `AUDIO_SCENARIO_DEFAULT`.
    */
@@ -154,13 +152,6 @@ struct AgoraServiceConfiguration {
    */
   bool useExternalEglContext;
 
-  /**
-   * Determines whether to enable domain limit.
-   * - `true`: only connect to servers that already parsed by DNS
-   * - `false`: (Default) connect to servers with no limit
-   */
-  bool domainLimit;
-
   AgoraServiceConfiguration() : enableAudioProcessor(true),
                                 enableAudioDevice(true),
                                 enableVideo(false),
@@ -168,12 +159,10 @@ struct AgoraServiceConfiguration {
                                 appId(NULL),
                                 areaCode(rtc::AREA_CODE_GLOB),
                                 channelProfile(agora::CHANNEL_PROFILE_LIVE_BROADCASTING),
-                                license(NULL),
                                 audioScenario(rtc::AUDIO_SCENARIO_DEFAULT),
                                 useStringUid(false),
                                 serviceObserver(NULL),
-                                useExternalEglContext(false),
-                                domainLimit(false){}
+                                useExternalEglContext(false){}
 };
 /**
  * The audio session configurations.
@@ -231,15 +220,6 @@ struct AudioSessionConfiguration {
    */
   Optional<bool> allowMixWithOthers;
   /**
-   * Whether to duck the audio from this session with the audio from active audio sessions in other apps.
-   * - `true`: Duck the audio sessions.
-   * - `false`: Do not duck the audio session.
-   *
-   * @note
-   * This member is available only when the `playbackAndRecord` member is set as `true`.
-   */
-  Optional<bool> allowDuckOthers;
-  /**
    * Whether to allow Bluetooth handsfree devices to appear as available audio input
    * devices:
    * - `true`: Allow Bluetooth handsfree devices to appear as available audio input routes.
@@ -285,13 +265,12 @@ struct AudioSessionConfiguration {
    */
   Optional<int> outputNumberOfChannels;
 
-  void SetAll(const AudioSessionConfiguration& change) {
+  void SetAll(AudioSessionConfiguration& change) {
     SetFrom(&playbackAndRecord, change.playbackAndRecord);
     SetFrom(&chatMode, change.chatMode);
     SetFrom(&defaultToSpeaker, change.defaultToSpeaker);
     SetFrom(&overrideSpeaker, change.overrideSpeaker);
     SetFrom(&allowMixWithOthers, change.allowMixWithOthers);
-    SetFrom(&allowDuckOthers, change.allowDuckOthers);
     SetFrom(&allowBluetooth, change.allowBluetooth);
     SetFrom(&allowBluetoothA2DP, change.allowBluetoothA2DP);
     SetFrom(&sampleRate, change.sampleRate);
@@ -303,8 +282,8 @@ struct AudioSessionConfiguration {
   bool operator==(const AudioSessionConfiguration& o) const {
     return playbackAndRecord == o.playbackAndRecord && chatMode == o.chatMode &&
            defaultToSpeaker == o.defaultToSpeaker && overrideSpeaker == o.overrideSpeaker &&
-           allowMixWithOthers == o.allowMixWithOthers && allowDuckOthers == o.allowDuckOthers &&
-           allowBluetooth == o.allowBluetooth && allowBluetoothA2DP == o.allowBluetoothA2DP && sampleRate == o.sampleRate &&
+           allowMixWithOthers == o.allowMixWithOthers && allowBluetooth == o.allowBluetooth &&
+           allowBluetoothA2DP == o.allowBluetoothA2DP && sampleRate == o.sampleRate &&
            ioBufferDuration == o.ioBufferDuration &&
            inputNumberOfChannels == o.inputNumberOfChannels &&
            outputNumberOfChannels == o.outputNumberOfChannels;
@@ -350,18 +329,6 @@ public:
    * @param error {@link ERROR_CODE_TYPE}
    */
   virtual void onAudioDeviceError(ERROR_CODE_TYPE error, const char* description) {}
-  /**
-   * Reports the config fetch result.
-   *
-   * @param code The error code of fetching config.
-   *  - 0(ERR_OK): Success.
-   *  - 10(ERR_TIMEDOUT): Fetching config is timed out.
-   * @param configType The type of fetching config.
-   *  - 1(CONFIG_FETCH_TYPE_INITIALIZE): Fetch config when initializing RtcEngine without channel info.
-   *  - 2(CONFIG_FETCH_TYPE_JOIN_CHANNEL): Fetch config when joining channel with channel info, such as channel name and uid.
-   * @param configContent The config fetched from server.
-   */
-  virtual void onFetchConfigResult(int code, rtc::CONFIG_FETCH_TYPE configType, const char* configContent) {}
 };
 
 /**
@@ -502,17 +469,6 @@ class IAgoraService {
   virtual agora_refptr<rtc::ILocalAudioTrack> createLocalAudioTrack() = 0;
 
   /**
-   * Creates a local mixed audio track object and returns the pointer.
-   *
-   * By default, the audio track is created from mix source, which could mixed target track.
-   *
-   * @return
-   * - The pointer to \ref rtc::ILocalAudioTrack "ILocalAudioTrack": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<rtc::ILocalAudioTrack> createLocalMixedAudioTrack() = 0;
-
-  /**
    * Creates a local audio track object with a PCM data sender and returns the pointer.
    *
    * Once created, this track can be used to send PCM audio data.
@@ -542,6 +498,20 @@ class IAgoraService {
       agora_refptr<rtc::IAudioPcmDataSender> audioSource) = 0;
 
   /**
+   * Creates a local audio track object with a encoded data sender and returns the pointer.
+   *
+   * Once created, this track can be used to send encoded audio data.
+   *
+   * @param audioSource The pointer to the encoded audio data sender: \ref agora::rtc::IAudioEncodedFrameSender "IAudioEncodedFrameSender".
+   * @return
+   * - The pointer to \ref rtc::ILocalAudioTrack "ILocalAudioTrack": Success.
+   * - A null pointer: Failure.
+   * - `INVALID_STATE`, if `enableAudioProcessor` in \ref agora::base::AgoraServiceConfiguration "AgoraServiceConfiguration" is set as `false`.
+   */
+  virtual agora_refptr<rtc::ILocalAudioTrack> createDirectCustomAudioTrack(
+      agora_refptr<rtc::IAudioEncodedFrameSender> audioSource) = 0;
+
+  /**
    * Creates a local audio track object with a PCM data sender and returns the pointer.
    *
    * Once created, this track can be used to send PCM audio data.
@@ -555,6 +525,23 @@ class IAgoraService {
    */
   virtual agora_refptr<rtc::ILocalAudioTrack> createCustomAudioTrack(
       agora_refptr<rtc::IAudioPcmDataSender> audioSource, bool enableAec) = 0;
+
+  /**
+   * Creates a local audio track object with two PCM data sender and returns the pointer.
+   *
+   * Once created, this track can be used to send PCM audio data with echo cancellation.
+   *
+   * @param audioSource The pointer to the recording PCM audio data sender: \ref agora::rtc::IAudioPcmDataSender "IAudioPcmDataSender".
+   * @param audioReverseSource The pointer to the playout PCM audio data sender: \ref agora::rtc::IAudioPcmDataSender "IAudioPcmDataSender".
+   * @param audioSourceDelay The delay of recording pcm data when do echo cancellation.
+   * @return
+   * - The pointer to \ref rtc::ILocalAudioTrack "ILocalAudioTrack": Success.
+   * - A null pointer: Failure.
+   * - `INVALID_STATE`, if `enableAudioProcessor` in \ref agora::base::AgoraServiceConfiguration "AgoraServiceConfiguration" is set as `false`.
+   */
+  virtual agora_refptr<rtc::ILocalAudioTrack> createCustomAudioTrack(
+      agora_refptr<rtc::IAudioPcmDataSender> audioSource,
+      agora_refptr<rtc::IAudioPcmDataSender> audioReverseSource, int audioSourceDelay) = 0;
 
   /**
    * Creates a local audio track object with a audio mixer source and returns the pointer.
@@ -746,50 +733,6 @@ class IAgoraService {
       const rtc::SenderOptions& options,
       const char* id = OPTIONAL_NULLPTR) = 0;
 
-#if defined(__ANDROID__) || (defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
-  /**
-   * Creates a local video track object with a screen capture source extension and returns the pointer.
-   *
-   * Once created, this track can be used to work with the screen capture extension.
-   *
-   * @param screen The pointer to the screen capture source.
-   *
-   * @return
-   * - The pointer to \ref rtc::ILocalVideoTrack "ILocalVideoTrack": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<rtc::ILocalVideoTrack> createScreenCaptureVideoTrack(
-      agora_refptr<rtc::IScreenCapturer2> screen) = 0;
-
-/**
-   * Creates a local audio track object with a screen capture source extension and returns the pointer.
-   *
-   * Once created, this track can be used to work with the screen capture extension.
-   *
-   * @param screen The pointer to the screen capture source.
-   *
-   * @return
-   * - The pointer to \ref rtc::ILocalAudioTrack "ILocalAudioTrack": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<rtc::ILocalAudioTrack> createScreenCaptureAudioTrack(
-    agora_refptr<rtc::IScreenCapturer2> screen) = 0;
-#else
-  /**
-   * Creates a local video track object with a screen capture source extension and returns the pointer.
-   *
-   * Once created, this track can be used to work with the screen capture extension.
-   *
-   * @param screen The pointer to the screen capture source.
-   *
-   * @return
-   * - The pointer to \ref rtc::ILocalVideoTrack "ILocalVideoTrack": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<rtc::ILocalVideoTrack> createScreenCaptureVideoTrack(
-      agora_refptr<rtc::IScreenCapturer> screen, const char* id = OPTIONAL_NULLPTR) = 0;
-#endif
-
 /// @cond (!Linux)
   /**
    * Creates a local video track object with a media packet sender and returns the pointer.
@@ -891,16 +834,6 @@ class IAgoraService {
    */
   virtual agora_refptr<rtc::IAudioDeviceManager> createAudioDeviceManagerComponent(
       rtc::IAudioDeviceManagerObserver *observer) = 0;
-
-  /**
-   * Creates an data channel and returns the pointer.
-   *
-   * @return
-   * - The pointer to \ref rtc::ILocalDataChannel "ILocalDataChannel": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<ILocalDataChannel> createLocalDataChannel(const DataChannelConfig& config) = 0;
-
   /**
    * @brief Get the ID of the registered extension
    * 
@@ -916,10 +849,9 @@ class IAgoraService {
    * @brief load the dynamic library of the extension
    * 
    * @param path path of the extension library
-   * @param unload_after_use unload the library when engine release
    * @return int 
    */
-  virtual int loadExtensionProvider(const char* path, bool unload_after_use = false) = 0;
+  virtual int loadExtensionProvider(const char* path) = 0;
 #endif
   /**
    * Enable extension.
@@ -951,15 +883,6 @@ class IAgoraService {
   virtual int disableExtension(
       const char* provider_name, const char* extension_name, const char* track_id = NULL) = 0;
 
-  /**
-   * Get the \ref agora::rtc::IConfigCenter "IConfigCenter" object and return the pointer.
-   *
-   * @return
-   * - The pointer to \ref rtc::IConfigCenter "IConfigCenter": Success.
-   * - A null pointer: Failure.
-   */
-  virtual agora_refptr<rtc::IConfigCenter> getConfigCenter() = 0;
-      
  protected:
   virtual ~IAgoraService() {}
 };

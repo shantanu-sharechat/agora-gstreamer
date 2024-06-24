@@ -31,10 +31,6 @@ class ICameraCapturer : public RefCountInterface {
      * The camera source is the front camera.
      */
     CAMERA_FRONT,
-    /**
-     * The camera source is the extra camera.
-     */
-    CAMERA_EXTRA,
   };
 
   /**
@@ -79,16 +75,13 @@ class ICameraCapturer : public RefCountInterface {
      * @param deviceUniqueIdLength The length of the device ID.
      * @param productUniqueIdUTF8 The unique ID of the product.
      * @param productUniqueIdLength The length of the product ID.
-     * @param deviceTypeUTF8 The camera type of the device.
-     * @param deviceTypeLength The length of the camera type.
      * @return
      * The name of the device in the UTF8 format: Success.
      */
     virtual int32_t GetDeviceName(uint32_t deviceNumber, char* deviceNameUTF8,
                                   uint32_t deviceNameLength, char* deviceUniqueIdUTF8,
                                   uint32_t deviceUniqueIdLength, char* productUniqueIdUTF8 = 0,
-                                  uint32_t productUniqueIdLength = 0,
-                                  char* deviceTypeUTF8 = 0, uint32_t deviceTypeLength = 0) = 0;
+                                  uint32_t productUniqueIdLength = 0) = 0;
 
     /**
      * Sets the capability number for a specified device.
@@ -242,40 +235,18 @@ class ICameraCapturer : public RefCountInterface {
   /**
    * Checks whether the camera flash function is supported.
    *
-   * The SDK uses the front camera by default, so if you call `isCameraTorchSupported` directly,
-   * you can find out from the return value whether the device supports enabling the flash
-   * when using the front camera. If you want to check whether the device supports enabling the
-   * flash when using the rear camera, call \ref IRtcEngine::switchCamera "switchCamera"
-   * to switch the camera used by the SDK to the rear camera, and then call `isCameraTorchSupported`.
-   *
-   * @note
-   * - Call this method after the camera is started.
-   * - This method is for Android and iOS only.
-   * - On iPads with system version 15, even if `isCameraTorchSupported` returns true, you might
-   * fail to successfully enable the flash by calling \ref IRtcEngine::setCameraTorchOn "setCameraTorchOn"
-   * due to system issues.
-   *
    * @return
-   * - true: The device supports enabling the flash.
-   * - false: The device does not support enabling the flash.
+   * - true: The camera flash function is supported.
+   * - false: The camera flash function is not supported.
    */
   virtual bool isCameraTorchSupported() = 0;
 
   /**
-   * @note
-   * - Call this method after the camera is started.
-   * - This method is for Android and iOS only.
-   * - On iPads with system version 15, even if \ref IRtcEngine::isCameraTorchSupported "isCameraTorchSupported"
-   * returns true, you might fail to successfully enable the flash by calling `setCameraTorchOn` due to
-   * system issues.
+   * Enables the camera flash.
    *
-   * @param isOn Determines whether to enable the flash:
+   * @param isOn Determines whether to enable the camera flash.
    * - true: Enable the flash.
-   * - false: Disable the flash.
-   *
-   * @return
-   * - 0: Success
-   * - < 0: Failure
+   * - false: Do not enable the flash.
    */
   virtual int setCameraTorchOn(bool isOn) = 0;
 
@@ -309,45 +280,7 @@ class ICameraCapturer : public RefCountInterface {
    */
   virtual int setCameraExposurePosition(float positionXinView, float positionYinView) = 0;
   
-  /**
-   * Returns whether exposure value adjusting is supported by the current device.
-   * Exposure compensation is in auto exposure mode.
-   * @since v4.2.2.
-   * @note
-   * This method only supports Android and iOS.
-   * This interface returns valid values only after the device is initialized.
-   *
-   * @return
-   * - true: exposure value adjusting is supported.
-   * - false: exposure value adjusting is not supported or device is not initialized.
-   */
-  virtual bool isCameraExposureSupported() = 0;
-
-  /**
-   * Sets the camera exposure ratio.
-   *
-   * @since v4.2.2.
-   * @param value Absolute EV bias will set to camera.
-   *
-   * @return
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-  virtual int setCameraExposureFactor(float value) = 0;
-
 #if (defined(__APPLE__) && TARGET_OS_IOS)
-  /**
-   * Enables or disables the AVCaptureMultiCamSession.
-   *
-   * @param enable Determines whether to use the AVCaptureMultiCamSession:
-   * - true: Enable the AVCaptureMultiCamSession.
-   * - false: Disable the AVCaptureMultiCamSession.
-   *
-   * @return
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-  virtual bool enableMultiCamera(bool enable) = 0;
   /**
    * Checks whether the camera auto exposure function is supported.
    *
@@ -372,13 +305,6 @@ class ICameraCapturer : public RefCountInterface {
    * </ul>
    */
   virtual int setCameraAutoExposureFaceModeEnabled(bool enabled) = 0;
-
-  /**
-   * set camera stabilization mode.If open stabilization mode, fov will be smaller and capture latency will be longer.
-   *
-   * @param mode specifies the camera stabilization mode.
-   */
-  virtual int setCameraStabilizationMode(CAMERA_STABILIZATION_MODE mode) = 0;
 #endif
   
 #elif defined(_WIN32) || (defined(__linux__) && !defined(__ANDROID__)) || \
@@ -418,27 +344,6 @@ class ICameraCapturer : public RefCountInterface {
    * - < 0: Failure.
    */
   virtual int initWithDeviceName(const char* deviceName) = 0;
-#endif
-
-#if defined(__APPLE__)
-  /**
-   * Checks whether the center stage is supported. Use this method after starting the camera.
-   *
-   * @return
-   * - true: The center stage is supported.
-   * - false: The center stage is not supported.
-   */
-  virtual bool isSupportCenterStage() = 0;
-  
-  /** Enables the camera Center Stage.
-   * @param enabled enable Center Stage:
-   * - true: Enable Center Stage.
-   * - false: Disable Center Stage.
-   * @return
-   * - 0: Success.
-   * - < 0: Failure.
-   */
-  virtual int enableCenterStage(bool enabled) = 0;
 #endif
 
   /**
@@ -518,14 +423,14 @@ class ICameraCaptureObserver {
    *
    * @param imageWidth The width (px) of the local video.
    * @param imageHeight The height (px) of the local video.
-   * @param vecRectangle A Rectangle array of length 'numFaces', which represents the position and size of the human face on the local video：
+   * @param vecRectangle The position and size of the human face on the local video:
    * - `x`: The x coordinate (px) of the human face in the local video. Taking the top left corner of the captured video as the origin,
    * the x coordinate represents the relative lateral displacement of the top left corner of the human face to the origin.
    * - `y`: The y coordinate (px) of the human face in the local video. Taking the top left corner of the captured video as the origin,
    * the y coordinate represents the relative longitudinal displacement of the top left corner of the human face to the origin.
    * - `width`: The width (px) of the human face in the captured video.
    * - `height`: The height (px) of the human face in the captured video.
-   * @param vecDistance An int array of length 'numFaces', which represents distance (cm) between the human face and the screen.
+   * @param vecDistance The distance (cm) between the human face and the screen.
    * @param numFaces The number of faces detected. If the value is 0, it means that no human face is detected.
    */
   virtual void onFacePositionChanged(
