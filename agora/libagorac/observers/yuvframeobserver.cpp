@@ -15,9 +15,9 @@ void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid
   const int ySize = frame->yStride * frame->height;
   const int uSize = frame->uStride * frame->height / 2;
   const int vSize = frame->vStride * frame->height / 2;
-  memccpy((void*)buffer, frame->yBuffer, ySize);
-  memccpy((void*)(buffer + ySize), frame->uBuffer, uSize);
-  memccpy((void*)(buffer + ySize + uSize), frame->vBuffer, vSize);
+  memcpy((void*)buffer, frame->yBuffer, ySize);
+  memcpy((void*)(buffer + ySize), frame->uBuffer, uSize);
+  memcpy((void*)(buffer + ySize + uSize), frame->vBuffer, vSize);
 
   if(fn){
     fn(buffer, len, user_data);
