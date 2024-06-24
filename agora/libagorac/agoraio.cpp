@@ -42,6 +42,7 @@ bool AgoraIO::initializeService(){
 }
 
 bool AgoraIO::createConnection(){
+  AG_LOG(INFO, "Creating connection");
   agora::rtc::RtcConnectionConfiguration ccfg;
   ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_AUDIENCE;
   ccfg.autoSubscribeAudio = true;
@@ -53,6 +54,7 @@ bool AgoraIO::createConnection(){
     AG_LOG(ERROR, "Error create connection");
     return false;
   }
+  AG_LOG(INFO, "Connection created");
   return true;
 }
 
