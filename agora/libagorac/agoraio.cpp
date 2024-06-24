@@ -2,7 +2,7 @@
 // Created by Shantanu  Sharma on 21/06/24.
 //
 
-#include<stdio.h>
+#include<iostream>
 
 #include "agoraio.h"
 #include "IAgoraService.h"
