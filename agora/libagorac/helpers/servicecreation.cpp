@@ -94,11 +94,6 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
     return nullptr;
   }
 
-  AG_LOG(INFO, "Created log file at %s", DEFAULT_LOG_PATH);
-  if (service->setLogFile(DEFAULT_LOG_PATH, DEFAULT_LOG_SIZE) != 0) {
-    std::cout<<"returned from lifo file "<<std::endl;
-    return nullptr;
-  }
   if(verifyLicense() != 0) return nullptr;
   return service;
 }
