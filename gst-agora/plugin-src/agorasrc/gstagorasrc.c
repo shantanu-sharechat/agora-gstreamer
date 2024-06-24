@@ -154,7 +154,7 @@ static void handle_audio_out_fn(const uint8_t* buffer, uint64_t len, void* user_
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(agoraSrc->audio){
-        Frame* f=copy_frame(buffer, len);
+        Frame* f=copy_frame(buffer, len, ts);
         g_queue_push_tail(agoraSrc->media_queue, f);
     }
 }
