@@ -91,10 +91,6 @@ typedef struct _Gstagorasrc
 
 } Gstagorasrc;
 
-typedef struct _GstagorasrcClass {
-  GstElementClass parent_class;
-} GstagorasrcClass;
-
 G_END_DECLS
 
 #endif /* __GST_AGORASRC_H__ */
