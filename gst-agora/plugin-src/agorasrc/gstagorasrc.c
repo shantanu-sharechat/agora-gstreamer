@@ -245,8 +245,8 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
 
   gst_buffer_fill(buffer, 0, f->data, data_size);
   gst_buffer_set_size(buffer, data_size);
-  GST_BUFFER_PTS(buffer) = f->ts;
-  GST_BUFFER_DTS(buffer) = f->ts;
+  GST_BUFFER_PTS(buffer) = f->ts * GST_MSECOND;
+  GST_BUFFER_DTS(buffer) = f->ts * GST_MSECOND;
 
   if (!agoraSrc->is_segment_sent){
     GstSegment* segment = gst_segment_new();
@@ -254,7 +254,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
     segment->start = f->ts * GST_MSECOND;
     segment->stop = f->ts + 86400*1000 * GST_MSECOND;
     GstEvent* gst_event = gst_event_new_segment(segment);
-    GstPad *pad = gst_element_get_static_pad( (GstElement*) psrc, "src");
+    GstPad *pad = gst_element_get_static_pad((GstElement*) psrc, "src");
     gst_pad_push_event(pad, gst_event);
     gst_object_unref(pad);
     gst_segment_free(segment);
