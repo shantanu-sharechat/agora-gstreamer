@@ -121,14 +121,14 @@ Frame* copy_frame(const uint8_t* buffer, uint64_t len, uint64_t ts){
 
      f->len=len;
      f->data=(uint8_t*)malloc(len);
-     
+     f->ts=ts;
+
      if(f->data==NULL) {
        free(f);
        return NULL;
      } 
 
      memcpy(f->data, buffer, len);
-     f->ts=ts;
      return f;
 }
 
@@ -250,7 +250,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
 
   if (!agoraSrc->is_segment_sent){
     GstSegment* segment = gst_segment_new();
-    segment->format = GST_FORMAT_TIME;
+    gst_segment_init(segment, GST_FORMAT_TIME);
     segment->start = f->ts * GST_MSECOND;
     segment->stop = f->ts + 86400*1000 * GST_MSECOND;
     GstEvent* gst_event = gst_event_new_segment(segment);
