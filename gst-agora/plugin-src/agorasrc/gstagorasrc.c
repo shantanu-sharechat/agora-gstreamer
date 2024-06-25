@@ -366,6 +366,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   memset(agoraSrc->remote_user_id, 0, MAX_STRING_LEN);
   
   agoraSrc->audio=FALSE;
+  agoraSrc->is_segment_sent = false;
 }
 
 static void
