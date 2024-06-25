@@ -247,6 +247,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
   gst_buffer_set_size(buffer, data_size);
   GST_BUFFER_PTS(buffer) = f->ts * GST_MSECOND;
   GST_BUFFER_DTS(buffer) = f->ts * GST_MSECOND;
+  g_print("agorasrc: sending %" G_GSIZE_FORMAT" ts!\n", f->ts);
 
   if (!agoraSrc->is_segment_sent){
     GstSegment* segment = gst_segment_new();
