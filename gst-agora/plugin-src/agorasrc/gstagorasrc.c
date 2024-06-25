@@ -259,7 +259,6 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
     gst_pad_push_event(pad, gst_event);
     gst_object_unref(pad);
     gst_segment_free(segment);
-    gst_event_unref(gst_event);
     agoraSrc->is_segment_sent = true;
   }
 
