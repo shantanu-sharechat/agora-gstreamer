@@ -251,8 +251,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
     gst_segment_init(segment, GST_FORMAT_TIME);
     segment->start = f->ts * GST_MSECOND;
     segment->stop = f->ts * GST_MSECOND + 86400*1000 * GST_MSECOND;
-    GstEvent* gst_event = gst_event_new_segment(segment);
-    gst_base_src_push_segment(GST_BASE_SRC(psrc), gst_event);
+    gst_base_src_push_segment(GST_BASE_SRC(psrc), segment);
     agoraSrc->is_segment_sent = true;
   }
 
