@@ -180,9 +180,7 @@ int init_agora(Gstagorasrc * src){
    src->agora_ctx=agoraio_init(&config);    
   
    if(src->agora_ctx==NULL){
-
-      g_print("agora COULD NOT  be initialized\n");
-      return -1;   
+      return -1;
    }
 
    //this function will be called whenever there is a video frame ready 
@@ -192,8 +190,7 @@ int init_agora(Gstagorasrc * src){
    //create a media queue
    src->media_queue=g_queue_new();
 
-   g_print("agora has been successfuly initialized\n");
-  
+
 
    return 0;
 }
@@ -247,10 +244,8 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
   gst_buffer_set_size(buffer, data_size);
   GST_BUFFER_PTS(buffer) = f->ts * GST_MSECOND;
   GST_BUFFER_DTS(buffer) = f->ts * GST_MSECOND;
-  g_print("agorasrc: sending %" G_GSIZE_FORMAT" ts!\n", f->ts);
 
   if (!agoraSrc->is_segment_sent){
-    g_print("agorasrc: sending segment event\n");
     GstSegment* segment = gst_segment_new();
     gst_segment_init(segment, GST_FORMAT_TIME);
     segment->start = f->ts * GST_MSECOND;
@@ -258,9 +253,7 @@ gst_media_test_src_fill (GstPushSrc * psrc, GstBuffer * buffer){
     GstEvent* gst_event = gst_event_new_segment(segment);
     GstPad *pad = gst_element_get_static_pad((GstElement*) psrc, "src");
     // print pad name
-    g_print("pad name: %s\n", GST_PAD_NAME(pad));
     gboolean handled = gst_pad_push_event(pad, gst_event);
-    g_print("agorasrc: event res %d\n", handled);
     gst_object_unref(pad);
     gst_segment_free(segment);
     agoraSrc->is_segment_sent = true;
@@ -292,7 +285,6 @@ gst_media_test_src_start (GstBaseSrc * basesrc)
 static void
 gst_agorasrc_class_init (GstagorasrcClass * klass)
 {
-  g_print("agorasrc class has been started");
   GObjectClass *gobject_class;
   GstElementClass *gstelement_class;
 
@@ -343,8 +335,6 @@ gst_agorasrc_class_init (GstagorasrcClass * klass)
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&src_factory));
 
-  g_print("agorasrc class has been initialized\n");
-
 }
 
 /* initialize the new element
@@ -358,8 +348,6 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
 
   gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
   gst_base_src_set_blocksize  (GST_BASE_SRC (agoraSrc), 10*1024);
-
-  g_print("agorasrc instance has been initialized\n");
 
   //set it initially to null
   agoraSrc->agora_ctx=NULL;
@@ -380,7 +368,6 @@ gst_agorasrc_set_property (GObject * object, guint prop_id,
   Gstagorasrc *agoraSrc = GST_AGORASRC (object);
 
   const gchar* str;
-  g_print("setting property %d\n", prop_id);
 
   switch (prop_id) {
     case PROP_VERBOSE:
@@ -444,8 +431,6 @@ gst_agorasrc_get_property (GObject * object, guint prop_id,
 static gboolean
 agorasrc_init (GstPlugin * agorasrc)
 {
-
-  g_print("agorasrc_init called");
 
   /* debug category for fltering log messages
    *
