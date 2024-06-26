@@ -345,7 +345,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
 
   gst_base_src_set_live (GST_BASE_SRC (agoraSrc), TRUE);
   gst_base_src_set_blocksize  (GST_BASE_SRC (agoraSrc), 10*1024);
-  gst_base_src_set_do_timestamp(GST_BASE_SRC(psrc), true);
+  gst_base_src_set_do_timestamp(GST_BASE_SRC(agoraSrc), true);
 
   //set it initially to null
   agoraSrc->agora_ctx=NULL;
