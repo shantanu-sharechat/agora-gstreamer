@@ -11,6 +11,7 @@
 #include "NGIAgoraLocalUser.h"
 #include "agorac.h"
 #include "observers/yuvframeobserver.h"
+#include "observers/pcmframeobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/connectionobserver.h"
 
@@ -21,7 +22,7 @@ class AgoraIO{
   LocalUserObserver* local_user_observer;
   YUVFrameObserver* yuvFrameObserver;
   ConnectionObserver* connectionObserver;
-  PCMFrameObserver* pcmFrameObserver;
+  PcmFrameObserver* pcmFrameObserver;
   void setupAudioFrameObserver();
   void setupVideoFrameObserver();
   void setupLocalUserObserver();
