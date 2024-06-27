@@ -70,7 +70,6 @@ void AgoraIO::subscribe(){
 void AgoraIO::setupConnectionObserver(){
   AG_LOG(INFO, "Setting up connection observer");
   connectionObserver = new ConnectionObserver();
-  AG_LOG(INFO, "Setting up connection observer");
   connection->registerObserver(connectionObserver);
 }
 
@@ -79,6 +78,7 @@ void AgoraIO::setupLocalUserObserver(){
 }
 
 void AgoraIO::setupFrameObserver(){
+  AG_LOG(INFO, "Setting up frame observer");
   if(is_video){
     setupVideoFrameObserver();
     return;
