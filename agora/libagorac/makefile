@@ -12,6 +12,7 @@ AGORA_OBSERVER = observers/yuvframeobserver.cpp \
 				observers/connectionobserver.cpp \
 				observers/localuserobserver.cpp \
 				observers/sampleevent.cpp \
+				observers/pcmframeobserver.cpp \
 				helpers/servicecreation.cpp
 
 AGORA_IO_FILES=agoraio.cpp
