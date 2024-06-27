@@ -6,6 +6,7 @@
 #include "log.h"
 #include "AgoraBase.h"
 #include <thread>         // std::this_thread::sleep_for
+#include <mutex>
 
 int verifyLicense()
 {
