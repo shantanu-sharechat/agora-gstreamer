@@ -81,13 +81,15 @@ void AgoraIO::setupFrameObserver(){
 }
 
 void AgoraIO::setupAudioFrameObserver(){
-  frame_observer = new PcmFrameObserver();
-  local_user_observer->setAudioFrameObserver(dynamic_cast<PcmFrameObserver*>(frame_observer));
+  PcmFrameObserver* observer = new PcmFrameObserver();
+  local_user_observer->setAudioFrameObserver(observer);
+  frame_observer = observer;
 }
 
 void AgoraIO::setupVideoFrameObserver() {
-  frame_observer = new YUVFrameObserver();
-  local_user_observer->setVideoFrameObserver(dynamic_cast<YUVFrameObserver*>(frame_observer));
+  YUVFrameObserver* observer = new YUVFrameObserver();
+  local_user_observer->setVideoFrameObserver(observer);
+  frame_observer = observer;
 }
 
 void AgoraIO::setMediaOutFn(agora_media_out_fn fn, void *user_data) {
