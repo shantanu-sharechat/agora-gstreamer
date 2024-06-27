@@ -36,16 +36,9 @@ AgoraIoContext_t*  agoraio_init(agora_config_t* config){
     return ctx;
 }
 
-void agoraio_set_video_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData){
+void agoraio_media_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData){
    
    if(ctx==nullptr)  return;
 
-   ctx->agoraIo->setVideoOutFn(fn, userData);
-}
-
-void agoraio_set_audio_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData){
-
-   if(ctx==nullptr)  return;
-
-   ctx->agoraIo->setAudioOutFn(fn, userData);
+   ctx->agoraIo->setMediaOutFn(fn, userData);
 }

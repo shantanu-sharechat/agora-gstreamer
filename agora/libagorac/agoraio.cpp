@@ -6,12 +6,12 @@
 #include <string>
 
 #include "agoraio.h"
-#include "IAgoraService.h"
 #include "AgoraBase.h"
 #include "observers/connectionobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/yuvframeobserver.h"
 #include "observers/pcmframeobserver.h"
+#include "observers/frameobserver.h"
 #include "helpers/log.h"
 #include "helpers/servicecreation.h"
 
@@ -19,6 +19,7 @@ AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->app_id);
   channel = agora_config->ch_id;
   remote_uid = agora_config->remote_user_id;
+  is_video = agora_config->is_video;
   service = nullptr;
 }
 
@@ -71,22 +72,26 @@ void AgoraIO::setupLocalUserObserver(){
   local_user_observer = new LocalUserObserver(connection->getLocalUser());
 }
 
+void AgoraIO::setupFrameObserver(){
+  if(is_video){
+    setupVideoFrameObserver();
+    return;
+  }
+  setupAudioFrameObserver();
+}
+
 void AgoraIO::setupAudioFrameObserver(){
-  pcmFrameObserver = new PcmFrameObserver();
-  local_user_observer->setAudioFrameObserver(pcmFrameObserver);
+  frame_observer = new PcmFrameObserver();
+  local_user_observer->setAudioFrameObserver(std::dynamic_cast<PcmFrameObserver*>(frame_observer));
 }
 
 void AgoraIO::setupVideoFrameObserver() {
-  yuvFrameObserver = new YUVFrameObserver();
-  local_user_observer->setVideoFrameObserver(yuvFrameObserver);
+  frame_observer = new YUVFrameObserver();
+  local_user_observer->setVideoFrameObserver(std::dynamic_cast<YUVFrameObserver*>(frame_observer));
 }
 
-void AgoraIO::setVideoOutFn(agora_media_out_fn fn, void *user_data) {
-  yuvFrameObserver->setFrameOutFn(fn, user_data);
-}
-
-void AgoraIO::setAudioOutFn(agora_media_out_fn fn, void *user_data) {
-  pcmFrameObserver->setFrameOutFn(fn, user_data);
+void AgoraIO::setMediaOutFn(agora_media_out_fn fn, void *user_data) {
+  frame_observer->setFrameOutFn(fn, user_data);
 }
 
 bool AgoraIO::init() {
@@ -99,8 +104,7 @@ bool AgoraIO::init() {
   subscribe();
   setupConnectionObserver();
   setupLocalUserObserver();
-  setupAudioFrameObserver();
-  setupVideoFrameObserver();
+  setupFrameObserver();
   if (doConnect()) {
     return false;
   }

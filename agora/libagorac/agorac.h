@@ -21,14 +21,9 @@ typedef struct agora_receive_context_t agora_receive_context_t;
 
 typedef struct AgoraIoContext_t  AgoraIoContext_t;
 
-
 EXTERNC AgoraIoContext_t*  agoraio_init(agora_config_t* config);
 
-EXTERNC void agoraio_disconnect(AgoraIoContext_t** ctx);
-
-EXTERNC  void agoraio_set_video_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData);
-
-EXTERNC  void agoraio_set_audio_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData);
+EXTERNC  void agoraio_media_out_handler(AgoraIoContext_t* ctx, agora_media_out_fn fn, void* userData);
 
 #undef EXTERNC
 

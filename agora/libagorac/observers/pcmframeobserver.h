@@ -6,8 +6,10 @@
 #define AGORA_GSTREAMER_PCMFRAMEOBSERVER_H
 
 #include "AgoraMediaBase.h"
+#include "frameobserver.h"
+#include "agorac.h"
 
-class PcmFrameObserver : public agora::media::IAudioFrameObserverBase {
+class PcmFrameObserver : public agora::media::IAudioFrameObserverBase, public FrameObserver{
   agora_media_out_fn fn;
   void* user_data;
 public:
@@ -34,6 +36,8 @@ public:
   AudioParams getRecordAudioParams()  override {return  AudioParams();};
 
   AudioParams getMixedAudioParams() override {return  AudioParams();};
+
+  void setFrameOutFn(agora_media_out_fn _fn, void* _user_data) override;
 
 };
 

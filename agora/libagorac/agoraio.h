@@ -14,15 +14,16 @@
 #include "observers/pcmframeobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/connectionobserver.h"
+#include "observers/frameobserver.h"
 
 class AgoraIO{
   std::string appid, channel, remote_uid;
+  bool is_video;
   agora::base::IAgoraService* service;
   agora::agora_refptr<agora::rtc::IRtcConnection> connection;
   LocalUserObserver* local_user_observer;
-  YUVFrameObserver* yuvFrameObserver;
   ConnectionObserver* connectionObserver;
-  PcmFrameObserver* pcmFrameObserver;
+  FrameObserver* frame_observer;
   void setupAudioFrameObserver();
   void setupVideoFrameObserver();
   void setupLocalUserObserver();
@@ -31,10 +32,10 @@ class AgoraIO{
   void subscribe();
   bool initializeService();
   bool createConnection();
+  void setupFrameObserver();
 public:
   AgoraIO(agora_config_t* agora_config);
   bool init();
-  void setVideoOutFn(agora_media_out_fn fn, void* user_data);
-  void setAudioOutFn(agora_media_out_fn fn, void* user_data);
+  void setMediaOutFn(agora_media_out_fn fn, void* user_data);
 };
 #endif //AGORA_GSTREAMER_AGORAIO_H
