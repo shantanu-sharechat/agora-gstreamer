@@ -16,8 +16,6 @@ class PcmFrameObserver : public agora::media::IAudioFrameObserverBase, public Fr
 public:
   PcmFrameObserver(){}
 
-  void setFrameOutFn(agora_media_out_fn fn, void* user_data);
-
   bool onPlaybackAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
 
   bool onRecordAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
