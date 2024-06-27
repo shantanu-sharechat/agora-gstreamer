@@ -24,7 +24,7 @@ public:
 
   bool onMixedAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
 
-  bool onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, agora::media::AudioFrame& audioFrame) override;
+  bool onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, AudioFrame& audioFrame) override;
 
   bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) override {return true;};
 
