@@ -139,18 +139,7 @@ void destory_frame(Frame** f){
    free(*f);
 }
 
-//handle video out from agora to the plugin
-static void handle_video_out_fn(const uint8_t* buffer, uint64_t len, void* user_data, uint64_t ts){
-
-    Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
-    if(!agoraSrc->audio){
-
-        Frame* f=copy_frame(buffer, len, ts);
-        g_queue_push_tail(agoraSrc->media_queue, f);
-    }
-}
-
-static void handle_audio_out_fn(const uint8_t* buffer, uint64_t len, void* user_data, uint64_t ts){
+static void handle_media_out_fn(const uint8_t* buffer, uint64_t len, void* user_data, uint64_t ts){
 
     Gstagorasrc* agoraSrc=(Gstagorasrc*)(user_data);
     if(agoraSrc->audio){
@@ -176,6 +165,8 @@ int init_agora(Gstagorasrc * src){
    config.app_id=src->app_id;               /*appid*/
    config.ch_id=src->channel_id;            /*channel*/
    config.remote_user_id=src->remote_user_id;
+   config.is_video=!src->audio;             /*is_video*/
+
     /*initialize agora*/
    src->agora_ctx=agoraio_init(&config);    
   
@@ -184,8 +175,7 @@ int init_agora(Gstagorasrc * src){
    }
 
    //this function will be called whenever there is a video frame ready 
-   agoraio_set_video_out_handler(src->agora_ctx, handle_video_out_fn, (void*)(src));
-   agoraio_set_audio_out_handler(src->agora_ctx, handle_audio_out_fn, (void*)(src));
+  agoraio_media_out_handler(src->agora_ctx, handle_media_out_fn, (void*)(src));
 
    //create a media queue
    src->media_queue=g_queue_new();
@@ -353,7 +343,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   memset(agoraSrc->channel_id, 0, MAX_STRING_LEN);
   memset(agoraSrc->remote_user_id, 0, MAX_STRING_LEN);
   
-  agoraSrc->audio=FALSE;
+  agoraSrc->audio=false;
   agoraSrc->is_segment_sent = false;
 }
 
