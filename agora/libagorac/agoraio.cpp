@@ -56,14 +56,14 @@ int AgoraIO::doConnect(){
 }
 
 void AgoraIO::subscribe(){
-  if(enable_video){
+//  if(enable_video){
     agora::rtc::VideoSubscriptionOptions subscriptionOptions;
     subscriptionOptions.type = agora::rtc::VIDEO_STREAM_HIGH;
     connection->getLocalUser()->subscribeAllVideo(subscriptionOptions);
-  }
-  else {
+//  }
+//  else {
     connection->getLocalUser()->subscribeAllAudio();
-  }
+//  }
 }
 
 void AgoraIO::setupConnectionObserver(){
