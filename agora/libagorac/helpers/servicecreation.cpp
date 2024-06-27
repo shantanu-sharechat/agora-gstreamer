@@ -4,10 +4,8 @@
 
 #include "servicecreation.h"
 #include "log.h"
-#include <iostream>
 #include "AgoraBase.h"
 #include <thread>         // std::this_thread::sleep_for
-#include <chrono>         // std::chrono::seconds
 
 int verifyLicense()
 {
@@ -67,8 +65,15 @@ int verifyLicense()
 #endif
 }
 
+agora::base::IAgoraService* service_single = nullptr;
+
 agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
                                                       bool enableAudioProcessor, bool enableVideo,bool enableuseStringUid,bool enablelowDelay,const char* appid) {
+
+  if (service_single!=nullptr) {
+    return service_single;
+  }
+
   int32_t buildNum = 0;
   getAgoraSdkVersion(&buildNum);
 #if defined(SDK_BUILD_NUM)
@@ -95,5 +100,6 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
   }
 
   if(verifyLicense() != 0) return nullptr;
-  return service;
+  service_single = service;
+  return service_single;
 }
