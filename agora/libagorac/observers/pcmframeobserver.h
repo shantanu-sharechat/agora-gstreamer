@@ -25,7 +25,7 @@ public:
 
   bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) override {return true;};
 
-  void setFrameOutFn(agora_media_out_fn _fn, void* _user_data) override;
+  void setFrameOutFn(agora_media_out_fn _fn, void* _user_data);
 
 };
 
