@@ -11,6 +11,7 @@
 #include "observers/connectionobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/yuvframeobserver.h"
+#include "observers/pcmframeobserver.h"
 #include "helpers/log.h"
 #include "helpers/servicecreation.h"
 
@@ -71,6 +72,8 @@ void AgoraIO::setupLocalUserObserver(){
 }
 
 void AgoraIO::setupAudioFrameObserver(){
+  pcmFrameObserver = new PcmFrameObserver();
+  local_user_observer->setAudioFrameObserver(pcmFrameObserver);
 }
 
 void AgoraIO::setupVideoFrameObserver() {
@@ -83,7 +86,7 @@ void AgoraIO::setVideoOutFn(agora_media_out_fn fn, void *user_data) {
 }
 
 void AgoraIO::setAudioOutFn(agora_media_out_fn fn, void *user_data) {
-  // todo
+  pcmFrameObserver->setFrameOutFn(fn, user_data);
 }
 
 bool AgoraIO::init() {

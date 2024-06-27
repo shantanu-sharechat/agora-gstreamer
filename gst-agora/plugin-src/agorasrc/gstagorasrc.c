@@ -190,8 +190,6 @@ int init_agora(Gstagorasrc * src){
    //create a media queue
    src->media_queue=g_queue_new();
 
-
-
    return 0;
 }
 

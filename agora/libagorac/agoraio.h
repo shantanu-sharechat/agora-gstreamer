@@ -21,6 +21,7 @@ class AgoraIO{
   LocalUserObserver* local_user_observer;
   YUVFrameObserver* yuvFrameObserver;
   ConnectionObserver* connectionObserver;
+  PCMFrameObserver* pcmFrameObserver;
   void setupAudioFrameObserver();
   void setupVideoFrameObserver();
   void setupLocalUserObserver();
