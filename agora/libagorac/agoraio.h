@@ -13,13 +13,16 @@
 #include "observers/yuvframeobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/connectionobserver.h"
+#include "observers/pcmframeobserver.h"
 
 class AgoraIO{
   std::string appid, channel, remote_uid;
+  bool enable_video;
   agora::base::IAgoraService* service;
   agora::agora_refptr<agora::rtc::IRtcConnection> connection;
   LocalUserObserver* local_user_observer;
   YUVFrameObserver* yuvFrameObserver;
+  PcmFrameObserver* pcmFrameObserver;
   ConnectionObserver* connectionObserver;
   void setupAudioFrameObserver();
   void setupVideoFrameObserver();

@@ -176,6 +176,8 @@ int init_agora(Gstagorasrc * src){
    config.app_id=src->app_id;               /*appid*/
    config.ch_id=src->channel_id;            /*channel*/
    config.remote_user_id=src->remote_user_id;
+   config.enable_video = !src->audio;       /*enable video if audio is false*/
+
     /*initialize agora*/
    src->agora_ctx=agoraio_init(&config);    
   

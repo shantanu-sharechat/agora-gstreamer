@@ -11,6 +11,7 @@
 #include "observers/connectionobserver.h"
 #include "observers/localuserobserver.h"
 #include "observers/yuvframeobserver.h"
+#include "observers/pcmframeobserver.h"
 #include "helpers/log.h"
 #include "helpers/servicecreation.h"
 
@@ -18,6 +19,7 @@ AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->app_id);
   channel = agora_config->ch_id;
   remote_uid = agora_config->remote_user_id;
+  enable_video = agora_config->enable_video;
   service = nullptr;
 }
 
@@ -54,9 +56,14 @@ int AgoraIO::doConnect(){
 }
 
 void AgoraIO::subscribe(){
-  agora::rtc::VideoSubscriptionOptions subscriptionOptions;
-  subscriptionOptions.type = agora::rtc::VIDEO_STREAM_HIGH;
-  connection->getLocalUser()->subscribeAllVideo(subscriptionOptions);
+  if(enable_video){
+    agora::rtc::VideoSubscriptionOptions subscriptionOptions;
+    subscriptionOptions.type = agora::rtc::VIDEO_STREAM_HIGH;
+    connection->getLocalUser()->subscribeAllVideo(subscriptionOptions);
+  }
+  else {
+    connection->getLocalUser()->subscribeAllAudio();
+  }
 }
 
 void AgoraIO::setupConnectionObserver(){
@@ -71,9 +78,17 @@ void AgoraIO::setupLocalUserObserver(){
 }
 
 void AgoraIO::setupAudioFrameObserver(){
+  if(!enable_video){
+    return;
+  }
+  pcmFrameObserver = new PcmFrameObserver();
+  local_user_observer->setAudioFrameObserver(pcmFrameObserver);
 }
 
 void AgoraIO::setupVideoFrameObserver() {
+  if(!enable_video){
+    return;
+  }
   yuvFrameObserver = new YUVFrameObserver();
   local_user_observer->setVideoFrameObserver(yuvFrameObserver);
 }
@@ -83,7 +98,7 @@ void AgoraIO::setVideoOutFn(agora_media_out_fn fn, void *user_data) {
 }
 
 void AgoraIO::setAudioOutFn(agora_media_out_fn fn, void *user_data) {
-  // todo
+  pcmFrameObserver->setFrameOutFn(fn, user_data);
 }
 
 bool AgoraIO::init() {
