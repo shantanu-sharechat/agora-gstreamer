@@ -89,12 +89,12 @@ void AgoraIO::setupFrameObserver(){
 
 void AgoraIO::setupAudioFrameObserver(){
   frame_observer = new PcmFrameObserver();
-  local_user_observer->setAudioFrameObserver(observer);
+  local_user_observer->setAudioFrameObserver(dynamic_cast<agora::media::IAudioFrameObserverBase*>frame_observer);
 }
 
 void AgoraIO::setupVideoFrameObserver() {
   frame_observer = new YUVFrameObserver();
-  local_user_observer->setVideoFrameObserver(observer);
+  local_user_observer->setVideoFrameObserver(dynamic_cast<agora::rtc::IVideoFrameObserver2*>frame_observer);
 }
 
 void AgoraIO::setMediaOutFn(agora_media_out_fn fn, void *user_data) {
