@@ -38,8 +38,8 @@ bool AgoraIO::createConnection(){
   AG_LOG(INFO, "Creating connection");
   agora::rtc::RtcConnectionConfiguration ccfg;
   ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_AUDIENCE;
-  ccfg.autoSubscribeAudio = true;
-  ccfg.autoSubscribeVideo = true;
+  ccfg.autoSubscribeAudio = false;
+  ccfg.autoSubscribeVideo = false;
   ccfg.enableAudioRecordingOrPlayout =false;
   connection = service->createRtcConnection(ccfg);
   if (!connection.get())
