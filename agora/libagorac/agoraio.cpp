@@ -82,6 +82,8 @@ void AgoraIO::setupAudioFrameObserver(){
     return;
   }
   pcmFrameObserver = new PcmFrameObserver();
+  connection->getLocalUser()->setPlaybackAudioFrameBeforeMixingParameters(
+          1, 48000);
   local_user_observer->setAudioFrameObserver(pcmFrameObserver);
 }
 
