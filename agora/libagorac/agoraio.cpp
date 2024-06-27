@@ -14,6 +14,7 @@
 #include "observers/frameobserver.h"
 #include "helpers/log.h"
 #include "helpers/servicecreation.h"
+#include "NGIAgoraLocalUser.h"
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->app_id);
@@ -88,12 +89,12 @@ void AgoraIO::setupFrameObserver(){
 
 void AgoraIO::setupAudioFrameObserver(){
   frame_observer = new PcmFrameObserver();
-  local_user_observer->setAudioFrameObserver(observer);
+  local_user_observer->setAudioFrameObserver(frame_observer);
 }
 
 void AgoraIO::setupVideoFrameObserver() {
   frame_observer = new YUVFrameObserver();
-  local_user_observer->setVideoFrameObserver(observer);
+  local_user_observer->setVideoFrameObserver(frame_observer);
 }
 
 void AgoraIO::setMediaOutFn(agora_media_out_fn fn, void *user_data) {
