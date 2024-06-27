@@ -52,7 +52,6 @@ bool AgoraIO::createConnection(){
 }
 
 int AgoraIO::doConnect(){
-  std::cout<<appid.c_str()<<channel.c_str()<<remote_uid.c_str()<<std::endl;
   return connection->connect(appid.c_str(), channel.c_str(), remote_uid.c_str());
 }
 
