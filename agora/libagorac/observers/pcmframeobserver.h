@@ -6,11 +6,10 @@
 #define AGORA_GSTREAMER_PCMFRAMEOBSERVER_H
 
 #include "AgoraMediaBase.h"
-#include "frameobserver.h"
 #include "agorac.h"
 #include "NGIAgoraAudioTrack.h"
 
-class PcmFrameObserver : public agora::media::IAudioFrameObserverBase, public FrameObserver{
+class PcmFrameObserver : public agora::media::IAudioFrameObserverBase{
   agora_media_out_fn fn;
   void* user_data;
 public:
