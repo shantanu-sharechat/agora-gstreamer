@@ -78,7 +78,7 @@ void AgoraIO::setupLocalUserObserver(){
 }
 
 void AgoraIO::setupAudioFrameObserver(){
-  if(!enable_video){
+  if(enable_video){
     return;
   }
   pcmFrameObserver = new PcmFrameObserver();
@@ -94,10 +94,16 @@ void AgoraIO::setupVideoFrameObserver() {
 }
 
 void AgoraIO::setVideoOutFn(agora_media_out_fn fn, void *user_data) {
+  if(!enable_video){
+    return;
+  }
   yuvFrameObserver->setFrameOutFn(fn, user_data);
 }
 
 void AgoraIO::setAudioOutFn(agora_media_out_fn fn, void *user_data) {
+  if(enable_video){
+    return;
+  }
   pcmFrameObserver->setFrameOutFn(fn, user_data);
 }
 
