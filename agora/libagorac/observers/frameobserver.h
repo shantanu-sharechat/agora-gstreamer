@@ -5,6 +5,8 @@
 #ifndef AGORA_GSTREAMER_FRAMEOBSERVER_H
 #define AGORA_GSTREAMER_FRAMEOBSERVER_H
 
+#include "agorac.h"
+
 class FrameObserver{
 public:
   virtual void setFrameOutFn(agora_media_out_fn fn, void* user_data) = 0;
