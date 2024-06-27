@@ -18,8 +18,9 @@
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->app_id);
   channel = agora_config->ch_id;
-  remote_uid = agora_config->remote_user_id;
+  local_uid = agora_config->user_id;
   enable_video = agora_config->enable_video;
+  subscribe_user_id = agora_config->subscribe_user_id;
   service = nullptr;
 }
 
@@ -52,17 +53,17 @@ bool AgoraIO::createConnection(){
 }
 
 int AgoraIO::doConnect(){
-  return connection->connect(appid.c_str(), channel.c_str(), remote_uid.c_str());
+  return connection->connect(appid.c_str(), channel.c_str(), local_uid.c_str());
 }
 
 void AgoraIO::subscribe(){
 //  if(enable_video){
     agora::rtc::VideoSubscriptionOptions subscriptionOptions;
     subscriptionOptions.type = agora::rtc::VIDEO_STREAM_HIGH;
-    connection->getLocalUser()->subscribeAllVideo(subscriptionOptions);
+    connection->getLocalUser()->subscribeVideo(subscribe_uid, subscriptionOptions);
 //  }
 //  else {
-    connection->getLocalUser()->subscribeAllAudio();
+    connection->getLocalUser()->subscribeAudio(subscribe_uid);
 //  }
 }
 

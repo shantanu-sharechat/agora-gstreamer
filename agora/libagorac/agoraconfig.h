@@ -4,8 +4,9 @@
 typedef struct{
   char*           app_id;
   char*           ch_id;
-  char*           remote_user_id;
+  char*           user_id;
   bool            enable_video;
+  char*           subscribe_user_id;
 }agora_config_t;
 
 #endif

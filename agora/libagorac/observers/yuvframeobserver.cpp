@@ -3,7 +3,6 @@
 //
 
 #include "yuvframeobserver.h"
-#include<iostream>
 
 void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid, const agora::media::base::VideoFrame* frame){
   const int len = frame->height * frame->width * 3 / 2;

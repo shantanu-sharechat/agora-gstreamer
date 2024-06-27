@@ -16,7 +16,7 @@
 #include "observers/pcmframeobserver.h"
 
 class AgoraIO{
-  std::string appid, channel, remote_uid;
+  std::string appid, channel, local_uid, subscribe_uid;
   bool enable_video;
   agora::base::IAgoraService* service;
   agora::agora_refptr<agora::rtc::IRtcConnection> connection;

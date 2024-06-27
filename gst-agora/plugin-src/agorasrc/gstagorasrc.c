@@ -82,6 +82,7 @@ enum
   PROP_VERBOSE,
   APP_ID,
   CHANNEL_ID,
+  USER_ID,
   REMOTE_USER_ID,
   AUDIO
 };
@@ -175,7 +176,8 @@ int init_agora(Gstagorasrc * src){
 
    config.app_id=src->app_id;               /*appid*/
    config.ch_id=src->channel_id;            /*channel*/
-   config.remote_user_id=src->remote_user_id;
+   config.user_id=src->user_id;
+   config.subscribe_user_id=src->remote_user_id;
    config.enable_video = !src->audio;       /*enable video if audio is false*/
 
     /*initialize agora*/
@@ -320,10 +322,15 @@ gst_agorasrc_class_init (GstagorasrcClass * klass)
       g_param_spec_string ("channel", "channel", "agora channel id",
           FALSE, G_PARAM_READWRITE));
 
-  /*user_id*/
+  /*remote_user_id*/
   g_object_class_install_property (gobject_class, REMOTE_USER_ID,
-      g_param_spec_string ("remoteuserid", "remoteuserid", "agora user id to subscribe to it (optional)",
+      g_param_spec_string ("remoteuserid", "remoteuserid", "agora user id to subscribe",
           FALSE, G_PARAM_READWRITE));
+
+  /*user_id*/
+  g_object_class_install_property (gobject_class, USER_ID,
+                                   g_param_spec_string ("userid", "userid", "local user id",
+                                                        FALSE, G_PARAM_READWRITE));
 
   gst_element_class_set_details_simple(gstelement_class,
     "agorasrc",
@@ -356,6 +363,7 @@ gst_agorasrc_init (Gstagorasrc * agoraSrc)
   memset(agoraSrc->app_id, 0, MAX_STRING_LEN);
   memset(agoraSrc->channel_id, 0, MAX_STRING_LEN);
   memset(agoraSrc->remote_user_id, 0, MAX_STRING_LEN);
+  memset(agoraSrc->user_id, 0, MAX_STRING_LEN);
   
   agoraSrc->audio=FALSE;
   agoraSrc->is_segment_sent = false;
@@ -384,7 +392,11 @@ gst_agorasrc_set_property (GObject * object, guint prop_id,
      case REMOTE_USER_ID:
         str=g_value_get_string (value);
         g_strlcpy(agoraSrc->remote_user_id, str, MAX_STRING_LEN);
-        break; 
+        break;
+    case USER_ID:
+        str=g_value_get_string (value);
+        g_strlcpy(agoraSrc->user_id, str, MAX_STRING_LEN);
+        break;
      case AUDIO: 
         agoraSrc->audio = g_value_get_boolean (value);
         break;
@@ -412,6 +424,9 @@ gst_agorasrc_get_property (GObject * object, guint prop_id,
        break;
     case REMOTE_USER_ID:
         g_value_set_string (value, agoraSrc->remote_user_id);
+        break;
+    case USER_ID:
+        g_value_set_string (value, agoraSrc->user_id);
         break;
     case AUDIO:
         g_value_set_boolean (value, agoraSrc->audio);

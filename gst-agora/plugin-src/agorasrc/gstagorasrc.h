@@ -90,6 +90,7 @@ typedef struct _Gstagorasrc
   gchar app_id[MAX_STRING_LEN];
   gchar channel_id[MAX_STRING_LEN];
   gchar remote_user_id[MAX_STRING_LEN];
+  gchar user_id[MAX_STRING_LEN];
 
 } Gstagorasrc;
 
