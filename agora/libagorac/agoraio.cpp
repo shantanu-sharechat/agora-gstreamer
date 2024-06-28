@@ -2,11 +2,9 @@
 // Created by Shantanu  Sharma on 21/06/24.
 //
 
-#include<iostream>
 #include <string>
 
 #include "agoraio.h"
-#include "IAgoraService.h"
 #include "AgoraBase.h"
 #include "observers/connectionobserver.h"
 #include "observers/localuserobserver.h"
@@ -63,7 +61,7 @@ void AgoraIO::subscribe(){
     connection->getLocalUser()->subscribeVideo(subscribe_uid.c_str(), subscriptionOptions);
 //  }
 //  else {
-    connection->getLocalUser()->subscribeAudio(subscribe_uid.c_str());
+    connection->getLocalUser()->subscribeAllAudio();
 //  }
 }
 
