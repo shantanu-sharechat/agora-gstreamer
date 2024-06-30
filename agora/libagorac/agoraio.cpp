@@ -82,8 +82,10 @@ void AgoraIO::setupAudioFrameObserver(){
   }
   AG_LOG(INFO, "Setting up audio frame observer");
   pcmFrameObserver = new PcmFrameObserver();
-  connection->getLocalUser()->setPlaybackAudioFrameBeforeMixingParameters(
-          1, 48000);
+  connection->getLocalUser()->setPlaybackAudioFrameParameters(
+          1, 48000,
+          agora::rtc::RAW_AUDIO_FRAME_OP_MODE_READ_ONLY,
+          0.01 * 1 * 48000);
   local_user_observer->setAudioFrameObserver(pcmFrameObserver);
 }
 
