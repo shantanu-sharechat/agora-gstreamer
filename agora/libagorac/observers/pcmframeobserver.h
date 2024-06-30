@@ -15,13 +15,13 @@ class PcmFrameObserver : public agora::media::IAudioFrameObserverBase{
 public:
   PcmFrameObserver(){}
 
-  bool onPlaybackAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
+  bool onPlaybackAudioFrame(const char* channelId,AudioFrame& audioFrame) override ;
 
   bool onRecordAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
 
   bool onMixedAudioFrame(const char* channelId,AudioFrame& audioFrame) override { return true; };
 
-  bool onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, AudioFrame& audioFrame) override;
+  bool onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, AudioFrame& audioFrame) override { return true; };
 
   bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) override {return true;};
 

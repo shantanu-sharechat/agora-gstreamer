@@ -5,7 +5,7 @@
 #include "pcmframeobserver.h"
 #include "agorac.h"
 
-bool PcmFrameObserver::onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, AudioFrame& audioFrame) {
+bool PcmFrameObserver::onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame) {
   if(fn){
     fn((uint8_t*)audioFrame.buffer, audioFrame.samplesPerChannel * audioFrame.channels * 2, user_data, audioFrame.renderTimeMs);
   }

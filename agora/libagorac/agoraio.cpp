@@ -61,7 +61,7 @@ void AgoraIO::subscribe(){
     connection->getLocalUser()->subscribeVideo(subscribe_uid.c_str(), subscriptionOptions);
 //  }
 //  else {
-    connection->getLocalUser()->subscribeAudio(subscribe_uid.c_str());
+    connection->getLocalUser()->subscribeAllAudio();
 //  }
 }
 
