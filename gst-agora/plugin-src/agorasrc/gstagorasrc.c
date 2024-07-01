@@ -130,7 +130,6 @@ Frame* copy_frame(const uint8_t* buffer, uint64_t len, uint64_t ts){
      } 
 
      memcpy(f->data, buffer, len);
-     free((void*)buffer);
      return f;
 }
 
@@ -148,6 +147,7 @@ static void handle_video_out_fn(const uint8_t* buffer, uint64_t len, void* user_
     if(!agoraSrc->audio){
 
         Frame* f=copy_frame(buffer, len, ts);
+        free((void*)buffer);
         g_queue_push_tail(agoraSrc->media_queue, f);
     }
 }
