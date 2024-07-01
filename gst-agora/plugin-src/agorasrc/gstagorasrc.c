@@ -130,6 +130,7 @@ Frame* copy_frame(const uint8_t* buffer, uint64_t len, uint64_t ts){
      } 
 
      memcpy(f->data, buffer, len);
+     free((void*)buffer);
      return f;
 }
 

@@ -14,10 +14,6 @@ void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid
   memcpy((void*)(buffer + ySize), frame->uBuffer, uSize);
   memcpy((void*)(buffer + ySize + uSize), frame->vBuffer, vSize);
 
-  delete frame->yBuffer;
-  delete frame->uBuffer;
-  delete frame->vBuffer;
-
   if(fn){
     fn(buffer, len, user_data, frame->renderTimeMs);
   }
