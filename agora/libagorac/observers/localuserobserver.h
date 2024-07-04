@@ -31,9 +31,9 @@ struct videoInfo{
 
 class LocalUserObserver : public agora::rtc::ILocalUserObserver {
 public:
-  SampleLocalUserObserver(agora::rtc::IRtcConnection* connection);
-  SampleLocalUserObserver(agora::rtc::ILocalUser* user);
-  virtual ~SampleLocalUserObserver();
+  LocalUserObserver(agora::rtc::IRtcConnection* connection);
+  LocalUserObserver(agora::rtc::ILocalUser* user);
+  virtual ~LocalUserObserver();
 
 public:
   agora::rtc::ILocalUser* GetLocalUser();
