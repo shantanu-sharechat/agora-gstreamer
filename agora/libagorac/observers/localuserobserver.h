@@ -31,9 +31,9 @@ struct videoInfo{
 
 class LocalUserObserver : public agora::rtc::ILocalUserObserver {
 public:
-  LocalUserObserver(agora::rtc::IRtcConnection* connection);
-  LocalUserObserver(agora::rtc::ILocalUser* user);
-  virtual ~LocalUserObserver();
+  SampleLocalUserObserver(agora::rtc::IRtcConnection* connection);
+  SampleLocalUserObserver(agora::rtc::ILocalUser* user);
+  virtual ~SampleLocalUserObserver();
 
 public:
   agora::rtc::ILocalUser* GetLocalUser();
@@ -173,13 +173,17 @@ public:
   void onFirstRemoteAudioDecoded(agora::user_id_t userId, int elapsed) {}
   void onFirstRemoteVideoDecoded(agora::user_id_t userId, int width, int height, int elapsed) override;
 
+  // virtual void onFirstRemoteAudioDecoded(agora::user_id_t userId, int elapsed){}
+  void onAudioTrackPublishStart(agora::agora_refptr<agora::rtc::ILocalAudioTrack> audioTrack) override {}
+
+  void onAudioTrackUnpublished(agora::agora_refptr<agora::rtc::ILocalAudioTrack> audioTrack) override {}
+
+  void onVideoTrackPublishStart(agora::agora_refptr<agora::rtc::ILocalVideoTrack> videoTrack) override {}
+
+  void onVideoTrackUnpublished(agora::agora_refptr<agora::rtc::ILocalVideoTrack> videoTrack)override {}
 
   void onVideoSizeChanged(agora::user_id_t userId, int width, int height, int rotation) {}
   void onActiveSpeaker(agora::user_id_t userId){}
-
-//  void onLocalAudioTrackStateChanged(agora::agora_refptr<agora::rtc::ILocalAudioTrack> audioTrack,
-//                                     agora::rtc::LOCAL_AUDIO_STREAM_STATE state,
-//                                     agora::rtc::LOCAL_AUDIO_STREAM_ERROR errorCode) override {}
 private:
 
   agora::rtc::MixerLayoutConfig calculate_layout(int width,int height);
