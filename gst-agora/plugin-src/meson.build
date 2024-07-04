@@ -18,13 +18,12 @@ agorasrc_sources = [
 incdir1 = include_directories('/usr/local/include/gstreamer-1.0')
 incdir3 = include_directories('/usr/local/include')
 incdir4 = include_directories('/usr/include/aarch64-linux-gnu')
-incdir5 = include_directories('/usr/lib/aarch64-linux-gnu/glib-2.0/include')
 incdir6 = include_directories('/usr/include')
 
 gstagorasrc = library('gstagorasrc',
   agorasrc_sources,
   c_args: plugin_c_args,
-  include_directories : [incdir1, incdir3, incdir4, incdir5, incdir6],
+  include_directories : [incdir1, incdir3, incdir4, incdir6],
   dependencies : [
     libagorac,
     libagora_rtc_sdk,
