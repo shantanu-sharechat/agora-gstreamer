@@ -18,7 +18,7 @@ libdir2 = '/usr/local/lib/x86_64-linux-gnu'
 libagorac = cc.find_library('agorac', dirs : [libdir1])
 libagora_rtc_sdk = cc.find_library('agora_rtc_sdk', dirs : [libdir1])
 libagora_ffmpeg = cc.find_library('agora-ffmpeg', dirs : [libdir1])
-libagora-fdkaac = cc.find_library('agora-fdkaac', dirs : [libdir1])
+libagora_fdkaac = cc.find_library('agora-fdkaac', dirs : [libdir1])
 
 # Find libraries in /usr/local/lib/x86_64-linux-gnu
 libgstreamer = cc.find_library('gstreamer-1.0', dirs : [libdir2])
