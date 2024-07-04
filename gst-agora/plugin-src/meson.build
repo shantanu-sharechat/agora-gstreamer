@@ -18,8 +18,8 @@ agorasrc_sources = [
 incdir1 = include_directories('/usr/local/include/gstreamer-1.0')
 incdir2 = include_directories('/usr/include/glib-2.0')
 incdir3 = include_directories('/usr/local/include')
-incdir4 = include_directories('/usr/include/x86_64-linux-gnu')
-incdir5 = include_directories('/usr/lib/x86_64-linux-gnu/glib-2.0/include')
+incdir4 = include_directories('/usr/include/aarch64-linux-gnu')
+incdir5 = include_directories('/usr/lib/aarch64-linux-gnu/glib-2.0/include')
 incdir6 = include_directories('/usr/include')
 
 gstagorasrc = library('gstagorasrc',

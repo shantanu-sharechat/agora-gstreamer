@@ -12,7 +12,7 @@ api_version = '1.0'
 
 # Specify the library search paths
 libdir1 = '/usr/local/lib'
-libdir2 = '/usr/local/lib/x86_64-linux-gnu'
+libdir2 = '/usr/local/lib/aarch64-linux-gnu'
 
 # Find libraries in /usr/local/lib
 libagorac = cc.find_library('agorac', dirs : [libdir1])
