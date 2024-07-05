@@ -15,10 +15,10 @@
 
 AgoraIO::AgoraIO(agora_config_t* agora_config) {
   appid = std::string(agora_config->app_id);
-  channel = agora_config->ch_id;
-  local_uid = agora_config->user_id;
+  channel = std::string(agora_config->ch_id);
+  local_uid = std::string(agora_config->user_id);
   enable_video = agora_config->enable_video;
-  subscribe_uid = agora_config->subscribe_user_id;
+  subscribe_uid = std::string(agora_config->subscribe_user_id);
   service = nullptr;
 }
 
