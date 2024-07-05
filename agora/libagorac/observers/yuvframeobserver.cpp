@@ -12,7 +12,7 @@ void YUVFrameObserver::onFrame(const char* channelId, agora::user_id_t remoteUid
   const int vSize = frame->vStride * frame->height / 2;
   const int len =  ySize + uSize + vSize;
   uint8_t* buffer = new uint8_t[len];
-  AG_LOG(INFO, "YUVFrameObserver::onFrame: ySize: %d, uSize: %d, vSize: %d, len: %d, width: %d, height: %d", ySize, uSize, vSize, len, frame->width, frame->height);
+  AG_LOG(INFO, "YUVFrameObserver::onFrame: ySize: %d, uSize: %d, vSize: %d, len: %d, width: %d, height: %d, type: %d", ySize, uSize, vSize, len, frame->width, frame->height, frame->type);
   memcpy((void*)buffer, frame->yBuffer, ySize);
   memcpy((void*)(buffer + ySize), frame->uBuffer, uSize);
   memcpy((void*)(buffer + ySize + uSize), frame->vBuffer, vSize);
