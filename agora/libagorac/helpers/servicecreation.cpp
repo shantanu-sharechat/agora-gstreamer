@@ -102,6 +102,7 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
   if (service->initialize(scfg) != agora::ERR_OK) {
     return nullptr;
   }
+  AG_LOG(INFO, "After init");
 
   if(verifyLicense() != 0) return nullptr;
   service_single = service;
