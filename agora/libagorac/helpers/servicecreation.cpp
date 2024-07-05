@@ -73,7 +73,7 @@ std::mutex service_lock;
 agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
                                                       bool enableAudioProcessor, bool enableVideo,bool enableuseStringUid,bool enablelowDelay,const char* appid) {
 
-  std::lock_guard<std::mutex> lock(service_lock);
+//  std::lock_guard<std::mutex> lock(service_lock);
   if (service_single!=nullptr) {
     return service_single;
   }
