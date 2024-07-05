@@ -98,7 +98,7 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
     scfg.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_CLOUD_GAMING;
   }
   AG_LOG(INFO, "Before init");
-//  std::this_thread::sleep_for (std::chrono::seconds(1));
+  std::this_thread::sleep_for (std::chrono::seconds(3));
   if (service->initialize(scfg) != agora::ERR_OK) {
     AG_LOG(ERROR, "Failed to initialize service");
     return nullptr;
