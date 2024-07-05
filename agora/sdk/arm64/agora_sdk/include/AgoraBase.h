@@ -7,7 +7,7 @@
 
 // This header file is included by both high level and low level APIs,
 #pragma once  // NOLINT(build/header_guard)
-#define SDK_BUILD_NUM ( 257025 )
+#define SDK_BUILD_NUM ( 282885 )
 
 #include <stdarg.h>
 #include <stddef.h>
