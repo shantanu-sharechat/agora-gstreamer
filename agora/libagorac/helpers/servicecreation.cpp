@@ -100,6 +100,7 @@ agora::base::IAgoraService* createAndInitAgoraService(bool enableAudioDevice,
   AG_LOG(INFO, "Before init");
   std::this_thread::sleep_for (std::chrono::seconds(1));
   if (service->initialize(scfg) != agora::ERR_OK) {
+    AG_LOG(ERROR, "Failed to initialize service");
     return nullptr;
   }
   AG_LOG(INFO, "After init");
